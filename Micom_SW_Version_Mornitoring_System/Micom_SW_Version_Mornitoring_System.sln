@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Micom_SW_Version_Mornitoring_System", "Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System.csproj", "{1EB5B635-B871-4D1A-9C59-B61331EF4399}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F13DBC0-B768-45A8-B784-DB64A423F19C}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MicomDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'F0997CB7C41337DC7B33C73594713D20_TWARE\MICOM_SW_VERSION_MORNITORING_SYSTEM\MICOM_SW_VERSION_MORNITORING_SYSTEM\MICOMDATABASE.MDF.dbo.MicomVersionDatabase' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="MicomVersionDatabase">
+          <Property Name="Line" Type="text" />
+          <Property Name="PCBcode" Type="text" />
+          <Property Name="PBAcode" Type="text" />
+          <Property Name="MicomAssyCode" Type="text" />
+          <Property Name="CheckSumValue" Type="text" />
+          <Property Name="VersionValue" Type="text" />
+        </EntityType>-->
+  <EntityContainer Name="MicomDatabaseModelStoreContainer" />
+</Schema>
