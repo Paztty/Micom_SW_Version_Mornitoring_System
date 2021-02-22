@@ -132,4 +132,3 @@ F:\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_
 F:\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.StartForm.resources
 F:\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.ManagerForm.resources
 F:\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.Mornitoring.resources
-F:\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\Debug\MaterialSkin.dll

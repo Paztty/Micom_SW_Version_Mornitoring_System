@@ -43,8 +43,38 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void Mornitoring_Load(object sender, EventArgs e)
         {
+            dgwMicomSWMonitoring.Columns.Add("Column1", "LINE");
+            dgwMicomSWMonitoring.Columns.Add("Column2", "PCB CODE");
+            dgwMicomSWMonitoring.Columns.Add("Column3", "PBA CODE");
+            dgwMicomSWMonitoring.Columns.Add("Column4", "MAIN MICOM ASSCODE");
+            dgwMicomSWMonitoring.Columns.Add("Column5", "MAIN MICOM CHECKSUM");
+            dgwMicomSWMonitoring.Columns.Add("Column6", "MAIN MICOM VERSION");
+            dgwMicomSWMonitoring.Columns.Add("Column7", "INV MICOM ASSCODE");
+            dgwMicomSWMonitoring.Columns.Add("Column8", "INV MICOM CHECKSUM");
+            dgwMicomSWMonitoring.Columns.Add("Column9", "INV MICOM VERSION");
+            dgwMicomSWMonitoring.Columns.Add("Column10", "UPDATE TIME");
+
             mySQL.GetDataFromTable("MicomVersionMornitor");
-            mySQL.LoadToDataGridView(dataGridView1, "MicomVersionMornitor");
+            mySQL.LoadToDataGridView(dgwMicomSWMonitoring, "MicomVersionMornitor");
+
+            for (int i = 0; i < dgwMicomSWMonitoring.Rows.Count; i++)
+            {
+                if (i < 3)
+                {
+                    dgwMicomSWMonitoring.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(47, 56, 37);
+                }
+                else if (i < 8)
+                {
+                    dgwMicomSWMonitoring.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(85, 56, 28);
+                }
+                else
+                {
+                    dgwMicomSWMonitoring.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(96, 103, 120);
+                }
+            }
+            dgwMicomSWMonitoring[0, 0].Selected = false;
+            dgwMicomSWMonitoring.ScrollBars = ScrollBars.None;
+            dgwMicomSWMonitoring.Enabled = false;
         }
     }
 }

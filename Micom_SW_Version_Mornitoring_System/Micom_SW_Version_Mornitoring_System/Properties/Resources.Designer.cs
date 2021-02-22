@@ -93,9 +93,29 @@ namespace Micom_SW_Version_Mornitoring_System.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap button_minimise {
+            get {
+                object obj = ResourceManager.GetObject("button_minimise", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap button_mornitoring {
             get {
                 object obj = ResourceManager.GetObject("button_mornitoring", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap button_o {
+            get {
+                object obj = ResourceManager.GetObject("button_o", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
