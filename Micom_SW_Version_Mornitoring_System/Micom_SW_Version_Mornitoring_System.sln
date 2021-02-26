@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Micom_SW_Version_Mornitoring_System", "Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System.csproj", "{1EB5B635-B871-4D1A-9C59-B61331EF4399}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{569A315A-4E21-4EFE-9F0E-B5B6AB89AFB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EB5B635-B871-4D1A-9C59-B61331EF4399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{569A315A-4E21-4EFE-9F0E-B5B6AB89AFB5}.Debug|Any CPU.ActiveCfg = Debug
+		{569A315A-4E21-4EFE-9F0E-B5B6AB89AFB5}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

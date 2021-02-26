@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartForm));
             this.button1 = new System.Windows.Forms.Button();
             this.btMornitoring = new System.Windows.Forms.Button();
@@ -40,6 +41,14 @@
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.lbVersion = new System.Windows.Forms.Label();
             this.lbEngNotification = new System.Windows.Forms.Label();
+            this.lbChangePass = new System.Windows.Forms.Label();
+            this.lbNewPass = new System.Windows.Forms.Label();
+            this.tbNewPass = new System.Windows.Forms.TextBox();
+            this.lbRetype = new System.Windows.Forms.Label();
+            this.tbRetype = new System.Windows.Forms.TextBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.lbLine = new System.Windows.Forms.Label();
+            this.btMinimize = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -57,6 +66,7 @@
             this.button1.Text = "Operator";
             this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btMornitoring
             // 
@@ -135,7 +145,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.label2.Location = new System.Drawing.Point(556, 126);
+            this.label2.Location = new System.Drawing.Point(556, 121);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 22);
             this.label2.TabIndex = 7;
@@ -157,7 +167,7 @@
             // 
             this.tbPassword.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.tbPassword.Location = new System.Drawing.Point(671, 123);
+            this.tbPassword.Location = new System.Drawing.Point(671, 120);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(170, 28);
@@ -186,6 +196,102 @@
             this.lbEngNotification.TabIndex = 10;
             this.lbEngNotification.Text = " ";
             // 
+            // lbChangePass
+            // 
+            this.lbChangePass.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbChangePass.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbChangePass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(36)))), ((int)(((byte)(70)))));
+            this.lbChangePass.Location = new System.Drawing.Point(725, 233);
+            this.lbChangePass.Name = "lbChangePass";
+            this.lbChangePass.Size = new System.Drawing.Size(112, 17);
+            this.lbChangePass.TabIndex = 12;
+            this.lbChangePass.Text = "Change Password";
+            this.lbChangePass.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbChangePass.Click += new System.EventHandler(this.lbChangePass_Click);
+            // 
+            // lbNewPass
+            // 
+            this.lbNewPass.AutoSize = true;
+            this.lbNewPass.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbNewPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.lbNewPass.Location = new System.Drawing.Point(556, 163);
+            this.lbNewPass.Name = "lbNewPass";
+            this.lbNewPass.Size = new System.Drawing.Size(88, 22);
+            this.lbNewPass.TabIndex = 14;
+            this.lbNewPass.Text = "New pass";
+            this.lbNewPass.Visible = false;
+            // 
+            // tbNewPass
+            // 
+            this.tbNewPass.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNewPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.tbNewPass.Location = new System.Drawing.Point(671, 161);
+            this.tbNewPass.Name = "tbNewPass";
+            this.tbNewPass.PasswordChar = '*';
+            this.tbNewPass.Size = new System.Drawing.Size(170, 28);
+            this.tbNewPass.TabIndex = 13;
+            this.tbNewPass.Visible = false;
+            // 
+            // lbRetype
+            // 
+            this.lbRetype.AutoSize = true;
+            this.lbRetype.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbRetype.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.lbRetype.Location = new System.Drawing.Point(557, 205);
+            this.lbRetype.Name = "lbRetype";
+            this.lbRetype.Size = new System.Drawing.Size(66, 22);
+            this.lbRetype.TabIndex = 16;
+            this.lbRetype.Text = "Retype";
+            this.lbRetype.Visible = false;
+            // 
+            // tbRetype
+            // 
+            this.tbRetype.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbRetype.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.tbRetype.Location = new System.Drawing.Point(672, 202);
+            this.tbRetype.Name = "tbRetype";
+            this.tbRetype.PasswordChar = '*';
+            this.tbRetype.Size = new System.Drawing.Size(170, 28);
+            this.tbRetype.TabIndex = 15;
+            this.tbRetype.Visible = false;
+            // 
+            // timer
+            // 
+            this.timer.Interval = 5000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // lbLine
+            // 
+            this.lbLine.AutoSize = true;
+            this.lbLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.lbLine.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbLine.ForeColor = System.Drawing.Color.White;
+            this.lbLine.Location = new System.Drawing.Point(389, 301);
+            this.lbLine.Name = "lbLine";
+            this.lbLine.Size = new System.Drawing.Size(0, 22);
+            this.lbLine.TabIndex = 17;
+            this.lbLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btMinimize
+            // 
+            this.btMinimize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btMinimize.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btMinimize.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btMinimize.FlatAppearance.BorderSize = 0;
+            this.btMinimize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btMinimize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btMinimize.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btMinimize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btMinimize.Location = new System.Drawing.Point(44, 9);
+            this.btMinimize.Margin = new System.Windows.Forms.Padding(0);
+            this.btMinimize.Name = "btMinimize";
+            this.btMinimize.Size = new System.Drawing.Size(35, 26);
+            this.btMinimize.TabIndex = 18;
+            this.btMinimize.Text = "--";
+            this.btMinimize.UseVisualStyleBackColor = false;
+            this.btMinimize.Click += new System.EventHandler(this.btMinimize_Click);
+            // 
             // StartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -195,6 +301,13 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(869, 405);
             this.ControlBox = false;
+            this.Controls.Add(this.btMinimize);
+            this.Controls.Add(this.lbLine);
+            this.Controls.Add(this.lbRetype);
+            this.Controls.Add(this.tbRetype);
+            this.Controls.Add(this.lbNewPass);
+            this.Controls.Add(this.tbNewPass);
+            this.Controls.Add(this.lbChangePass);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.lbEngNotification);
             this.Controls.Add(this.label3);
@@ -206,6 +319,7 @@
             this.Controls.Add(this.btManager);
             this.Controls.Add(this.btMornitoring);
             this.Controls.Add(this.button1);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -213,6 +327,8 @@
             this.MinimizeBox = false;
             this.Name = "StartForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.StartForm_Load);
+            this.DoubleClick += new System.EventHandler(this.StartForm_DoubleClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -232,5 +348,13 @@
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label lbVersion;
         private System.Windows.Forms.Label lbEngNotification;
+        private System.Windows.Forms.Label lbChangePass;
+        private System.Windows.Forms.Label lbNewPass;
+        private System.Windows.Forms.TextBox tbNewPass;
+        private System.Windows.Forms.Label lbRetype;
+        private System.Windows.Forms.TextBox tbRetype;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label lbLine;
+        private System.Windows.Forms.Button btMinimize;
     }
 }

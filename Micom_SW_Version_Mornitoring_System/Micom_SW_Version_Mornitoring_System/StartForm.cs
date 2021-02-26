@@ -5,7 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,9 +18,40 @@ namespace Micom_SW_Version_Mornitoring_System
         MySQL mySQL = new MySQL();
         public StartForm()
         {
-            InitializeComponent();
+
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            File.AppendAllText(@"D:\log_" + DateTime.Now.ToString("yyyy_MM_dd") + ".txt", DateTime.Now.ToString("yyyy_MM_dd hh_mm :") + " Program open.");
+
+
+            InitializeComponent();
+            try
+            {
+                if (!Directory.Exists(@"C:\DEV\MSWS")) Directory.CreateDirectory(@"C:\DEV\MSWS");
+                if (File.Exists(@"C:\DEV\MSWS\config.txt"))
+                {
+                    lbLine.Text = File.ReadAllText(@"C:\DEV\MSWSconfig.txt");
+                }
+
+                if (!File.Exists(@"C:\DEV\MSWS\databaseConfig.cfg"))
+                {
+                    string connecStr = JsonSerializer.Serialize(mySQL);
+                    File.WriteAllText(@"C:\DEV\MSWS\databaseConfig.cfg", connecStr);
+                }
+                else
+                {
+                    string str = File.ReadAllText(@"C:\DEV\MSWS\databaseConfig.cfg");
+                    mySQL = JsonSerializer.Deserialize<MySQL>(str);
+                }
+            }
+            catch (Exception)
+            { }
+
+            String firstMacAddress = NetworkInterface
+                    .GetAllNetworkInterfaces()
+                    .Where(nic => nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                    .Select(nic => nic.GetPhysicalAddress().ToString())
+                    .FirstOrDefault();
+            Console.WriteLine(firstMacAddress);
+
         }
         private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -31,7 +64,6 @@ namespace Micom_SW_Version_Mornitoring_System
             {
                 return System.Reflection.Assembly.LoadFrom(fullPath);
             }
-
             return null;
         }
         #region Form control  
@@ -59,29 +91,124 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void btManager_Click(object sender, EventArgs e)
         {
-            if (mySQL.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
+            if (mySQL.TestConnection())
             {
-                ManagerForm managerForm = new ManagerForm();
-                managerForm.Show();
-                this.Hide();
+                if (changePassFlag)
+                {
+                    if (tbUser.TextLength < 7)
+                    {
+                        lbEngNotification.Text = "Tài khoản cần tối thiểu 7 kí tự." + Environment.NewLine + "Account needs a minimum of 7 characters.";
+                    }
+                    else
+                    {
+                        if (mySQL.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
+                        {
+                            if (tbNewPass.Text == tbRetype.Text)
+                            {
+                                lbEngNotification.Text = "Change user password " + mySQL.AccountChangePass(tbUser.Text, tbNewPass.Text);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (mySQL.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
+                    {
+                        ManagerForm managerForm = new ManagerForm();
+                        this.Hide();
+                        managerForm.ShowDialog();
+                        this.Show();
+                    }
+                    else
+                    {
+                        //lbVieNotification.Text = "Tài khoản hoặc mật khẩu không chính xác. Trong trường hợp quên mật khẩu vui lòng liên hệ quản trị viên: 0346809230.";
+                        lbEngNotification.Text = "Account or password is incorrect. In case of forgetting the password, please contact the administrator: 0346809230.";
+                    }
+                }
             }
             else
             {
-                //lbVieNotification.Text = "Tài khoản hoặc mật khẩu không chính xác. Trong trường hợp quên mật khẩu vui lòng liên hệ quản trị viên: 0346809230.";
-                lbEngNotification.Text = "Account or password is incorrect. In case of forgetting the password, please contact the administrator: 0346809230.";
+                lbEngNotification.Text = "Connection fail.";
             }
         }
 
         private void btMonitoring_Click(object sender, EventArgs e)
         {
             Mornitoring mornitoring = new Mornitoring();
-            mornitoring.Show();
             this.Hide();
+            mornitoring.ShowDialog();
+            this.Show();
+
         }
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
             this.AcceptButton = btManager;
+        }
+
+        bool changePassFlag = false;
+        private void lbChangePass_Click(object sender, EventArgs e)
+        {
+            if (changePassFlag)
+            {
+                lbChangePass.Text = "Change Password";
+                btManager.Text = "Manager";
+                changePassFlag = false;
+                lbNewPass.Visible = changePassFlag;
+                tbNewPass.Visible = changePassFlag;
+                lbRetype.Visible = changePassFlag;
+                tbRetype.Visible = changePassFlag;
+            }
+            else
+            {
+                btManager.Text = "Change";
+                lbChangePass.Text = "Login";
+                changePassFlag = true;
+                lbNewPass.Visible = changePassFlag;
+                tbNewPass.Visible = changePassFlag;
+                lbRetype.Visible = changePassFlag;
+                tbRetype.Visible = changePassFlag;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OperatorForm operatorForm = new OperatorForm();
+            this.Hide();
+            operatorForm.ShowDialog();
+            this.Show();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (mySQL.TestConnection())
+            {
+                string lineStatus = File.ReadAllText(@"C:\Auto Micom Writing\AMW\status.txt");
+                string line = File.ReadAllText(@"C:\DEV\MSWS\config.txt");
+                mySQL.UpdateRunStopStatus(lineStatus, line);
+            }
+            timer.Interval = 5000;
+        }
+        private void StartForm_Load(object sender, EventArgs e)
+        {
+            if (mySQL.TestConnection())
+            {
+                if (File.Exists(@"C:\Auto Micom Writing\AMW\status.txt") && File.Exists(@"C:\DEV\MSWS\config.txt"))
+                {
+                    string lineStatus = File.ReadAllText(@"C:\Auto Micom Writing\AMW\status.txt");
+                    string line = File.ReadAllText(@"C:\DEV\MSWS\config.txt");
+                    mySQL.UpdateRunStopStatus(lineStatus, line);
+                    timer.Start();
+                }
+            }
+        }
+        private void StartForm_DoubleClick(object sender, EventArgs e)
+        {
+            
+        }
+        private void btMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

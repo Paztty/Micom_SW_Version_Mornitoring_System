@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 using MySql;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using System.IO;
+using System.Text.Json;
 
 namespace Micom_SW_Version_Mornitoring_System
 {
     class MySQL
     {
-        public string connectionStr = "server=sql12.freesqldatabase.com;user=sql12390272;database=sql12390272;password=uvwb9ppkvs;";
-        public string dbServer = "sql12.freesqldatabase.com";
-        public string dbDatabase = "sql12393466";
-        public string dbUser = "sql12393466";
-        public string dbPassword = "nNaIbF84eY";
+        public string connectionStr;
+        public string dbServer { get; set; } = "sql12.freesqldatabase.com";
+        public string dbDatabase { get; set; } = "sql12395168";
+        public string dbUser { get; set; } = "sql12395168";
+        public string dbPassword { get; set; } = "MakU4RSCBC";
         public BaseTableCache tableCache = new BaseTableCache(1000);
         public MySqlConnection connection;
-
 
         private int dataColumnsCount = 17;
 
@@ -45,7 +46,6 @@ namespace Micom_SW_Version_Mornitoring_System
         public List<DataTable> DataTables = new List<DataTable>();
 
         public MySQL() {
-            Console.WriteLine("");
             this.connectionStr = "server=" + dbServer + ";user=" + dbUser + ";database=" + dbDatabase + ";password=" + dbPassword;
             this.connection = new MySqlConnection(this.connectionStr);
         }
@@ -79,7 +79,24 @@ namespace Micom_SW_Version_Mornitoring_System
             return Global.user.userName;
         }
 
-
+        public string AccountChangePass(string acc, string newpass)
+        {
+            string returnStr = "success.";
+            //UPDATE `MicomVersionUser` SET `Password` = '7163002' WHERE `MicomVersionUser`.`ID` = '7163001';
+            string CommandText = "UPDATE `MicomVersionUser` SET `Password` = '"+ newpass +"' WHERE `MicomVersionUser`.`ID` = '" + acc + "';";
+            this.connection.Open();
+            MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
+            try
+            {
+                strCmd.ExecuteNonQuery();
+            }
+            catch (Exception err)
+            {
+                returnStr = "Have an error: " + err.Message;
+            }
+            this.connection.Close();
+            return returnStr;
+        }
         public MySQL(string Server, string User, string database, string password)
         {
             this.connectionStr = "server=" + Server + ";user=" + User + ";database=" + database + ";password=" + password;
@@ -89,9 +106,7 @@ namespace Micom_SW_Version_Mornitoring_System
         {
             try
             {
-                Console.WriteLine("Openning Connection ...");
                 connection.Open();
-                Console.WriteLine("Connection successful!");
                 connection.Close();
                 return true;
             }
@@ -179,7 +194,6 @@ namespace Micom_SW_Version_Mornitoring_System
                                     //Console.Write(DataTables[0].Value[rows][i] + "  ");
                                 }
                                 catch {
-                                    Console.WriteLine("Error 1");
                                 };
                             }
                             //Console.WriteLine();
@@ -210,9 +224,28 @@ namespace Micom_SW_Version_Mornitoring_System
                 }
             }
         }
+        public void LoadToDataTableBuffer(System.Data.DataTable view, string TableName)
+        {
+            view.Rows.Clear();
+            foreach (DataTable table in DataTables)
+            {
+                if (table.Name == TableName)
+                {
+                    for (int i = 0; i < table.Value.Count; i++)
+                    {
+                        string[] rowValue = new string[view.Columns.Count];
+                        for (int viewColumnCount = 0; viewColumnCount < view.Columns.Count; viewColumnCount++)
+                        {
+                            rowValue[viewColumnCount] = table.Value[i][viewColumnCount];
+                        }
+                        view.Rows.Add(rowValue);
+                    }
+                }
+            }
+        }
+
         public void LoadToDataTable(System.Data.DataTable view, string TableName)
         {
-
             System.Data.DataTable dataTable = new System.Data.DataTable();
             dataTable.Columns.Add("Master Data");
             dataTable.Columns.Add("Model");
@@ -300,8 +333,9 @@ namespace Micom_SW_Version_Mornitoring_System
             //`Inv Apply day` = '22/11/2019',
             //`Last user` = '7183938'
             //WHERE `Micom SW Version`.`Master Data` = 'DC92-00004Y-A';
-        public void EditDatabase(Model model, string Edit_masterdata)
+        public string EditDatabase(Model model, string Edit_masterdata)
         {
+            string returnStr = "success.";
             if (string.IsNullOrWhiteSpace(Edit_masterdata))
             {
                 throw new ArgumentException($"'{nameof(Edit_masterdata)}' cannot be null or whitespace", nameof(Edit_masterdata));
@@ -317,33 +351,37 @@ namespace Micom_SW_Version_Mornitoring_System
             "`Assy Main Micom Code` = '" + model.ROMs[0].AssyMicomCode + "',"+
             "`Main Micom Name` = '" + model.ROMs[0].MicomName + "',"+
             "`Main Checksum` = '" + model.ROMs[0].Checksum + "',"+
-            "` Main Version` = '" + model.ROMs[0].Version + "',"+
+            "`Main Version` = '" + model.ROMs[0].Version + "',"+
             "`Main Apply day` = '" + model.ROMs[0].DateApply + "',"+
             "`Assy Inv Micom Code` = '" + model.ROMs[1].AssyMicomCode + "',"+
             "`Inv Micom Name` = '" + model.ROMs[1].MicomName+ "',"+
-            "` Inv Checksum` = '" + model.ROMs[1].Checksum + "',"+
+            "`Inv Checksum` = '" + model.ROMs[1].Checksum + "',"+
             "`Inv Version` = '" + model.ROMs[1].Version + "',"+
             "`Inv Apply day` = '" + model.ROMs[1].DateApply+ "',"+
-            "`Last user` = '" +Global.user.userID+ "'"+
+            "`Last user` = '" + Global.user.userID + "'"+
             "WHERE `Micom SW Version`.`Master Data` = '" + Edit_masterdata+ "';";
             Console.WriteLine(CommandText);
             MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
             this.connection.Open();
-            using (MySqlDataReader dataReader = strCmd.ExecuteReader())
+            try
             {
-                while (dataReader.Read())
-                {
-                }
+                strCmd.ExecuteNonQuery();
+            }
+            catch (Exception err)
+            {
+                returnStr = "have an error: " + err.Message;
             }
             this.connection.Close();
+            return returnStr;
         }
-        public void InsertDatabase(Model model)
+        public string InsertDatabase(Model model)
         {
-            if (model.MasterData.Length < 5)
+            string returnStr = "success.";
+            if (model.MasterData.Length > 1)
             {
                 string CommandText =
                     "INSERT INTO `Micom SW Version`" +
-                    "(`Master Data`, `Model`, `Writing Area`, `Assy Code`, `PBA Code`, `PCB Code`, `Assy Main Micom Code`, `Main Micom Name`, `Main Checksum`, ` Main Version`, `Main Apply day`, `Assy Inv Micom Code`, `Inv Micom Name`, ` Inv Checksum`, `Inv Version`, `Inv Apply day`, `Last user`)" +
+                    "(`Master Data`, `Model`, `Writing Area`, `Assy Code`, `PBA Code`, `PCB Code`, `Assy Main Micom Code`, `Main Micom Name`, `Main Checksum`, `Main Version`, `Main Apply day`, `Assy Inv Micom Code`, `Inv Micom Name`, `Inv Checksum`, `Inv Version`, `Inv Apply day`, `Last user`)" +
                     "VALUES ('" +
                     model.MasterData + "', '" +
                     model.Name + "', '" +
@@ -365,30 +403,101 @@ namespace Micom_SW_Version_Mornitoring_System
                     "');";
                 MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
                 this.connection.Open();
-                using (MySqlDataReader dataReader = strCmd.ExecuteReader())
+                try
                 {
-                    while (dataReader.Read())
-                    {
-                    }
+                    strCmd.ExecuteNonQuery();
+                }
+                catch (Exception err)
+                {
+                    returnStr = "have an error: " + err.Message;
                 }
                 this.connection.Close();
             }
+            return returnStr;
         }
         public string DeleteData(string masterData)
         {
-            string returnStr = "";
+            string returnStr = "success.";
             string CommandText = "DELETE FROM `Micom SW Version` WHERE `Micom SW Version`.`Master Data` = '" + masterData + "'";
+            MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
+            this.connection.Open();
+            try
+            {
+                strCmd.ExecuteNonQuery();
+            }
+            catch (Exception err)
+            {
+                returnStr = "have an error: " + err.Message;
+            }
+            this.connection.Close();
+            return returnStr;
+        }
+
+        public void getLineList(List<string> lineList)
+        {
+            lineList.Clear();
+            string CommandText = "SELECT * FROM `MicomVersionMornitor`";
             MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
             this.connection.Open();
             using (MySqlDataReader dataReader = strCmd.ExecuteReader())
             {
+                int i = 0;
                 while (dataReader.Read())
                 {
-                    returnStr += dataReader.GetValue(0).ToString();
+                    lineList.Add("");
+                    lineList[i] = dataReader.GetValue(0).ToString();
+                    i++;
                 }
             }
             this.connection.Close();
+
+        }
+        public string UpdateUsedModel(Model model, string line)
+        {
+            //UPDATE `MicomVersionMornitor` SET `PCBcode` = 'DC92-02505A0', `PBAcode` = 'DC92-02505A0', `MicomAssycode` = 'DC94-002150', `ChecksumCode` = '0xFF0', `VersionCode` = 'AD350', `InvMicomAssCode` = 'DC94-002160', `InvMicomChecksum` = 'FDFA0', `InvMicomVersion` = 'AFAD0', `TimeChange` = '2/10/2021 15:38' WHERE `MicomVersionMornitor`.`Line` = 'DISPLAY_1';
+
+            string returnStr = "success.";
+            string CommandText = "UPDATE `MicomVersionMornitor` SET `" +
+                "PCBcode` = '"+ model.PCBCode + "', `" +
+                "PBAcode` = '" + model.PBACode + "', `" +
+                "MicomAssycode` = '" + model.ROMs[0].AssyMicomCode + "', `" +
+                "ChecksumCode` = '"+ model.ROMs[0].Checksum + "', `" +
+                "VersionCode` = '" + model.ROMs[0].Version + "', `" +
+                "InvMicomAssCode` = '" + model.ROMs[1].AssyMicomCode + "', `" +
+                "InvMicomChecksum` = '" + model.ROMs[1].Checksum + "', `" +
+                "InvMicomVersion` = '" + model.ROMs[1].Version + "',  `" +
+                "TimeChange` = '"+ DateTime.Now.ToString("dd/MM/yyyy HH:mm")+"'" +
+                "WHERE `MicomVersionMornitor`.`Line` = '" + line+ "';";
+            MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
+            this.connection.Open();
+            try
+            {
+                strCmd.ExecuteNonQuery();
+            }
+            catch (Exception err)
+            {
+                returnStr = "have an error: " + err.Message;
+                Console.WriteLine(err.Message);
+            }
+            this.connection.Close();
             return returnStr;
+        }
+        public void UpdateRunStopStatus(string status, string line)
+        {
+             string CommandText = "UPDATE `MicomVersionMornitor` SET `" +
+             "STATUS` = '" + status + "'" +
+             "WHERE `MicomVersionMornitor`.`Line` = '" + line + "';";
+            MySqlCommand strCmd = new MySqlCommand(CommandText, this.connection);
+            this.connection.Open();
+            try
+            {
+                strCmd.ExecuteNonQuery();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+            this.connection.Close();
         }
     }
 }

@@ -10,23 +10,23 @@ namespace Micom_SW_Version_Mornitoring_System
     class Model
     {
         // value
-        public string MasterData = "";
-        public string Name = "";
-        public string WritingArea = "";
-        public string AssyCode = "";
-        public string PBACode = "";
-        public string PCBCode = "";
+        public string MasterData { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string WritingArea { get; set; } = "";
+        public string AssyCode { get; set; } = "";
+        public string PBACode { get; set; } = "";
+        public string PCBCode { get; set; } = "";
 
         public bool _2Rom = false;
-        public List<ROM> ROMs = new List<ROM>();
+        public List<ROM> ROMs { get; set; } = new List<ROM>();
 
         public class ROM
         {
-            public string AssyMicomCode = "";
-            public string MicomName = "";
-            public string Checksum = "";
-            public string Version = "";
-            public string DateApply = ""; 
+            public string AssyMicomCode { get; set; } = "";
+            public string MicomName { get; set; } = "";
+            public string Checksum { get; set; } = "";
+            public string Version { get; set; } = "";
+            public string DateApply { get; set; } = ""; 
         }
 
         public Model() {
@@ -35,7 +35,7 @@ namespace Micom_SW_Version_Mornitoring_System
         }
         public void GetData(System.Windows.Forms.DataGridView table, int rowIndex)
         {
-            if (rowIndex >= 0)
+            if (rowIndex >= 0 && rowIndex < table.Rows.Count)
             {
                 MasterData = table[0, rowIndex].Value.ToString();
                 Name = table[1, rowIndex].Value.ToString();
