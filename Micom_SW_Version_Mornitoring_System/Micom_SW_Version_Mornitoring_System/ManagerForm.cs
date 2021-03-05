@@ -1,29 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql;
-using MySql.Data;
-using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Reflection;
-using ClosedXML.Excel;
 
 namespace Micom_SW_Version_Mornitoring_System
 {
     public partial class ManagerForm : Form
     {
         #region Variable
-        MySQL mySQL = new MySQL();
+        MySQLDatabase database = new MySQLDatabase();
         DataTable dataTable { get; set; } = new DataTable();
-
+        string lastUpdateTime = "";
         // data grid view object variable
         int sellectedRow = -1;
         Model Model = new Model();
@@ -58,6 +50,7 @@ namespace Micom_SW_Version_Mornitoring_System
             switch (ctrl)
             {
                 case "btClose":
+                    closed = true;
                     this.Close();
                     //StartForm startForm = new StartForm();
                     //startForm.Show();
@@ -81,8 +74,6 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
-            btModelAddNew.Enabled = false;
             btModelEdit.Enabled = false;
             btModelClear.Enabled = false;
             btExport.Enabled = Global.user.userPermission.Contains("Export");
@@ -93,11 +84,13 @@ namespace Micom_SW_Version_Mornitoring_System
             //btModelAddNew.Enabled = Global.user.userPermission.Contains(User.Permission.Watch.ToString());
 
             //gbROM2.Enabled = false;
-            CreatDataTable();
+            timerUpdateData.Interval = 10;
             timerUpdateData.Start();
-            dgvSWVersionMornitor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //dgvSWVersionMornitor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             lbLoading.Text = "Loading.....";
             lbLoading.Show();
+            Thread Notify = new Thread(loadNotify);
+            Notify.Start();
         }
 
         public void addLog(string log)
@@ -109,55 +102,15 @@ namespace Micom_SW_Version_Mornitoring_System
         #endregion
 
         #region Data connection
-
-
-
         private void CreatDataTable()
         {
-            dataTable.Columns.Add("Master Data");
-            dataTable.Columns.Add("Model");
-            dataTable.Columns.Add("Writing Area");
-            dataTable.Columns.Add("Assy Code");
-            dataTable.Columns.Add("PBA Code");
-            dataTable.Columns.Add("PCB Code");
-            dataTable.Columns.Add("MainAssy Micom Code");
-            dataTable.Columns.Add("MainMicom Name");
-            dataTable.Columns.Add("MainChecksum");
-            dataTable.Columns.Add("MainVersion");
-            dataTable.Columns.Add("MainApply day");
-            dataTable.Columns.Add("InvAssy Micom Code");
-            dataTable.Columns.Add("InvMicom Name");
-            dataTable.Columns.Add("InvChecksum");
-            dataTable.Columns.Add("InvVersion");
-            dataTable.Columns.Add("InvApply day");
-            dataTable.Columns.Add("Last user");
-
+            database.GetDataFromTable("Micom SW Version", dataTable);
             dgvSWVersionMornitor.DataSource = dataTable;
             foreach (DataGridViewColumn column in dgvSWVersionMornitor.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            dgvSWVersionMornitor.Columns[0].Visible = false;
-        }
 
-        private void UpdateFromServer()
-        {
-            try
-            {
-                dgvSWVersionMornitor.Invoke(new MethodInvoker(delegate
-                {
-                    if (mySQL.TestConnection())
-                    {
-                        mySQL.GetDataFromTable("Micom SW Version");
-                        mySQL.LoadToDataTable(dataTable, "Micom SW Version");
-                        timerUpdateData.Interval = 10000;
-                        timerUpdateData.Start();
-                        btModelAddNew.Enabled = Global.user.userPermission.Contains(User.Permission.Add.ToString());
-                    }
-                }));
-            }
-            catch (Exception)
-            { timerUpdateData.Stop(); }
         }
         #endregion
 
@@ -168,10 +121,16 @@ namespace Micom_SW_Version_Mornitoring_System
         {
             if (timerUpdateData.Interval == 10)
             {
-                if (mySQL.TestConnection())
+                if (database.Connect())
                 {
-                    UpdateFromServer();
-
+                    database.GetDataFromTable("Micom SW Version", dataTable);
+                    lastUpdateTime = database.UpdateData("Micom SW Version", dataTable, " ");
+                    dgvSWVersionMornitor.DataSource = dataTable;
+                    dgvSWVersionMornitor.Columns[0].Visible = false;
+                    dgvSWVersionMornitor.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    dgvSWVersionMornitor.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    dgvSWVersionMornitor.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    dgvSWVersionMornitor.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     for (int i = 0; i < dataTable.Rows.Count; i++)
                     {
                         if (!cbbPBAcode.Items.Contains(dataTable.Rows[i].ItemArray[4].ToString()))
@@ -192,19 +151,20 @@ namespace Micom_SW_Version_Mornitoring_System
                         }
                     }
                     lbLoading.Hide();
+                    btModelAddNew.Enabled = Global.user.userPermission.Contains("Add");
+                    btExport.Enabled = Global.user.userPermission.Contains("Export");
                 }
                 else
                 {
                     addLog("Connection Fail.");
                 }
-                timerUpdateData.Interval = 3600000;
+                timerUpdateData.Interval = 3000;
             }
             else
             {
-                if (mySQL.TestConnection())
+                if (database.Connect())
                 {
-                    Thread threadUpdate = new Thread(UpdateFromServer);
-                    threadUpdate.Start();
+                   lastUpdateTime = database.UpdateData("Micom SW Version", dataTable, lastUpdateTime);
                 }
             }
 
@@ -236,21 +196,25 @@ namespace Micom_SW_Version_Mornitoring_System
                     dgvSWVersionMornitor.Enabled = false;
                     break;
                 case "btModelClear":
-
+                    lbLoading.Text = "Loading.....";
                     string message = "Do you want to clear this model ?";
                     string title = "Clear model " + Model.AssyCode;
                     MessageBoxButtons buttons = MessageBoxButtons.YesNo;
                     DialogResult result = MessageBox.Show(message, title, buttons);
                     if (result == DialogResult.Yes)
                     {
-                        lbLoading.Text = "Loading.....";
                         lbLoading.Show();
-                        resultStr = mySQL.DeleteData(Model.MasterData);
+                        while (!lbLoading.Visible) ;
+                        resultStr = database.DeleteData(Model.MasterData);
                         lbLoading.Text = resultStr;
                         addLog(Global.user.userID + " Clear model: \"" + Model.AssyCode + "\" " + resultStr );
+                        if (resultStr == "success.")
+                        {
+                            database.updateAction(Global.user.userID, " Clear model \"" + Model.PBACode + "\" ");
+                        }
                     }
                     sellectedRow = -1;
-                    UpdateFromServer();
+                    database.UpdateData("Micom SW Version", dataTable, lastUpdateTime);
                     break;
                 case "btModelEdit":
                     loadDataToControl();
@@ -260,14 +224,19 @@ namespace Micom_SW_Version_Mornitoring_System
                     break;
                 case "btModelUpdate":
                     lbLoading.Text = "Loading.....";
-                    lbLoading.Show();
-                    if (mySQL.TestConnection())
+                    if (database.Connect())
                     {
                         string masterData = getDataFromControl(acction);
                         if (acction == "add")
                         {
-                            resultStr = mySQL.InsertDatabase(Model);
+                            lbLoading.Show();
+                            while (!lbLoading.Visible) ;
+                            resultStr = database.InsertDatabase(Model);
                             addLog(Global.user.userID + " Add model \"" + Model.AssyCode + "\" " + resultStr);
+                            if (resultStr == "success.")
+                            {
+                                database.updateAction(Global.user.userID, " Add model \"" + Model.PBACode + "\" ");
+                            }
                         }
                         if (acction == "edit")
                         {
@@ -277,13 +246,18 @@ namespace Micom_SW_Version_Mornitoring_System
                             DialogResult result1 = MessageBox.Show(message1, title1, buttons1);
                             if (result1 == DialogResult.Yes)
                             {
-                                resultStr = mySQL.EditDatabase(Model, masterData);
+                                lbLoading.Show();
+                                while (!lbLoading.Visible);
+                                resultStr = database.EditDatabase(Model, masterData);
                                 addLog(Global.user.userID + " Update model \"" + Model.AssyCode + "\" " + resultStr);
-
+                                if (resultStr == "success.")
+                                {
+                                    database.updateAction(Global.user.userID, " Update model \"" + Model.PBACode + "\" ");
+                                }
                             }
                         }
                         sellectedRow = -1;
-                        UpdateFromServer();
+                        database.UpdateData("Micom SW Version", dataTable, lastUpdateTime);
                         lbLoading.Text = resultStr;
                     }
                     else
@@ -486,7 +460,7 @@ namespace Micom_SW_Version_Mornitoring_System
                     bool exitted = false;
                     for (int column = 0; column < dgvSWVersionMornitor.ColumnCount; column++)
                     {
-                        if (dgvSWVersionMornitor[column, row].Value.ToString().Contains(tbFindModel.Text))
+                        if (dgvSWVersionMornitor[column, row].Value.ToString().Contains(tbFindModel.Text) || dgvSWVersionMornitor[column, row].Value.ToString().Contains(tbFindModel.Text.ToUpper()))
                         {
                             dgvSWVersionMornitor[column, row].Style.BackColor = Color.YellowGreen;
                             exitted = true;
@@ -522,6 +496,20 @@ namespace Micom_SW_Version_Mornitoring_System
         private void lbLoading_Click(object sender, EventArgs e)
         {
             lbLoading.Hide();
+        }
+
+        long lastLoadNotify = Convert.ToInt64(DateTime.Now.AddDays(-1).ToString("yyyyMMddHHmmss"));
+        bool closed = false;
+        public void loadNotify()
+        { 
+            while(!closed)
+            {
+                if (database.Connect())
+                {
+                    lastLoadNotify = database.loadAction(lastLoadNotify, tbServerNotify);
+                }
+                Thread.Sleep(1000);
+            }
         }
     }
 }

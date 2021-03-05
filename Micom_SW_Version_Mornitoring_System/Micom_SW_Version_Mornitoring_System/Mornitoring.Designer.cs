@@ -42,12 +42,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dgwMicomSWMonitoring = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.lbLoading = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btMaximize = new System.Windows.Forms.Button();
             this.btMinimize = new System.Windows.Forms.Button();
             this.btClose = new System.Windows.Forms.Button();
+            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.lbLoading = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwMicomSWMonitoring)).BeginInit();
             this.panel1.SuspendLayout();
@@ -231,6 +231,7 @@
             this.dgwMicomSWMonitoring.RowTemplate.ReadOnly = true;
             this.dgwMicomSWMonitoring.Size = new System.Drawing.Size(1121, 482);
             this.dgwMicomSWMonitoring.TabIndex = 3;
+            this.dgwMicomSWMonitoring.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgwMicomSWMonitoring_DataBindingComplete);
             // 
             // panel1
             // 
@@ -242,25 +243,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1290, 49);
             this.panel1.TabIndex = 3;
-            // 
-            // timerUpdate
-            // 
-            this.timerUpdate.Interval = 30000;
-            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
-            // 
-            // lbLoading
-            // 
-            this.lbLoading.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lbLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
-            this.lbLoading.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lbLoading.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbLoading.ForeColor = System.Drawing.Color.White;
-            this.lbLoading.Location = new System.Drawing.Point(398, 225);
-            this.lbLoading.Name = "lbLoading";
-            this.lbLoading.Size = new System.Drawing.Size(494, 89);
-            this.lbLoading.TabIndex = 42;
-            this.lbLoading.Text = "Loading.....";
-            this.lbLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
             // 
@@ -330,6 +312,25 @@
             this.btClose.Text = "  ";
             this.btClose.UseVisualStyleBackColor = false;
             this.btClose.Click += new System.EventHandler(this.FormControlClick);
+            // 
+            // timerUpdate
+            // 
+            this.timerUpdate.Interval = 30000;
+            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
+            // 
+            // lbLoading
+            // 
+            this.lbLoading.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lbLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.lbLoading.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lbLoading.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbLoading.ForeColor = System.Drawing.Color.White;
+            this.lbLoading.Location = new System.Drawing.Point(398, 225);
+            this.lbLoading.Name = "lbLoading";
+            this.lbLoading.Size = new System.Drawing.Size(494, 89);
+            this.lbLoading.TabIndex = 42;
+            this.lbLoading.Text = "Loading.....";
+            this.lbLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Mornitoring
             // 

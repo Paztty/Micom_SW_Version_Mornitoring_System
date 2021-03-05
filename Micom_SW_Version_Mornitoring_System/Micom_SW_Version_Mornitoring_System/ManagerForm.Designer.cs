@@ -48,6 +48,8 @@
             this.tbFindModel = new System.Windows.Forms.TextBox();
             this.pn = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tbServerNotify = new System.Windows.Forms.TextBox();
             this.tbActivityStatistics = new System.Windows.Forms.TextBox();
             this.pnDataEdit = new System.Windows.Forms.Panel();
             this.btCloseEdit = new System.Windows.Forms.Button();
@@ -104,6 +106,7 @@
             this.panel4.SuspendLayout();
             this.pn.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.pnDataEdit.SuspendLayout();
             this.gbROM2.SuspendLayout();
             this.gbROM1.SuspendLayout();
@@ -126,8 +129,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.59077F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.40922F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75.32281F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.67719F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1456, 724);
             this.tableLayoutPanel1.TabIndex = 0;
@@ -142,7 +145,7 @@
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvSWVersionMornitor.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvSWVersionMornitor.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dgvSWVersionMornitor.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSWVersionMornitor.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvSWVersionMornitor.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
             this.dgvSWVersionMornitor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -195,7 +198,7 @@
             this.dgvSWVersionMornitor.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvSWVersionMornitor.RowTemplate.ReadOnly = true;
             this.dgvSWVersionMornitor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSWVersionMornitor.Size = new System.Drawing.Size(1450, 590);
+            this.dgvSWVersionMornitor.Size = new System.Drawing.Size(1450, 518);
             this.dgvSWVersionMornitor.TabIndex = 2;
             this.dgvSWVersionMornitor.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSWVersionMornitor_CellClick);
             // 
@@ -356,33 +359,62 @@
             // 
             this.pn.Controls.Add(this.groupBox1);
             this.pn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pn.Location = new System.Drawing.Point(3, 626);
+            this.pn.Location = new System.Drawing.Point(3, 554);
             this.pn.Name = "pn";
-            this.pn.Size = new System.Drawing.Size(1450, 95);
+            this.pn.Size = new System.Drawing.Size(1450, 167);
             this.pn.TabIndex = 6;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.tbActivityStatistics);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel3);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1450, 95);
+            this.groupBox1.Size = new System.Drawing.Size(1450, 167);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Activity";
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.23546F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.76454F));
+            this.tableLayoutPanel3.Controls.Add(this.tbServerNotify, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tbActivityStatistics, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 24);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1444, 140);
+            this.tableLayoutPanel3.TabIndex = 2;
+            // 
+            // tbServerNotify
+            // 
+            this.tbServerNotify.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.tbServerNotify.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbServerNotify.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbServerNotify.ForeColor = System.Drawing.Color.White;
+            this.tbServerNotify.Location = new System.Drawing.Point(584, 3);
+            this.tbServerNotify.MaxLength = 100000;
+            this.tbServerNotify.Multiline = true;
+            this.tbServerNotify.Name = "tbServerNotify";
+            this.tbServerNotify.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbServerNotify.Size = new System.Drawing.Size(857, 134);
+            this.tbServerNotify.TabIndex = 1;
             // 
             // tbActivityStatistics
             // 
             this.tbActivityStatistics.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
             this.tbActivityStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbActivityStatistics.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbActivityStatistics.Location = new System.Drawing.Point(3, 24);
+            this.tbActivityStatistics.Location = new System.Drawing.Point(3, 3);
             this.tbActivityStatistics.Multiline = true;
             this.tbActivityStatistics.Name = "tbActivityStatistics";
-            this.tbActivityStatistics.Size = new System.Drawing.Size(1444, 68);
+            this.tbActivityStatistics.Size = new System.Drawing.Size(575, 134);
             this.tbActivityStatistics.TabIndex = 0;
             // 
             // pnDataEdit
@@ -985,7 +1017,8 @@
             this.panel4.PerformLayout();
             this.pn.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.pnDataEdit.ResumeLayout(false);
             this.pnDataEdit.PerformLayout();
             this.gbROM2.ResumeLayout(false);
@@ -1066,6 +1099,8 @@
         private System.Windows.Forms.Button btExport;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lbLoading;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        public System.Windows.Forms.TextBox tbServerNotify;
     }
 }
 

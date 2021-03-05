@@ -50,8 +50,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btModelSellect = new System.Windows.Forms.Button();
             this.btCloseEdit = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbbPBAcodeFilter = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbbAssyCodeFilter = new System.Windows.Forms.ComboBox();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -250,7 +248,6 @@
             this.cbbLine.Name = "cbbLine";
             this.cbbLine.Size = new System.Drawing.Size(259, 29);
             this.cbbLine.TabIndex = 11;
-            this.cbbLine.SelectedIndexChanged += new System.EventHandler(this.cbbLine_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -335,8 +332,6 @@
             // 
             this.panel2.Controls.Add(this.btModelSellect);
             this.panel2.Controls.Add(this.btCloseEdit);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.cbbPBAcodeFilter);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.cbbAssyCodeFilter);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -347,13 +342,14 @@
             // 
             // btModelSellect
             // 
+            this.btModelSellect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btModelSellect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
             this.btModelSellect.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btModelSellect.FlatAppearance.BorderSize = 0;
             this.btModelSellect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btModelSellect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btModelSellect.ForeColor = System.Drawing.Color.White;
-            this.btModelSellect.Location = new System.Drawing.Point(725, 10);
+            this.btModelSellect.Location = new System.Drawing.Point(1023, 11);
             this.btModelSellect.Margin = new System.Windows.Forms.Padding(0);
             this.btModelSellect.Name = "btModelSellect";
             this.btModelSellect.Size = new System.Drawing.Size(94, 29);
@@ -370,7 +366,7 @@
             this.btCloseEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btCloseEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btCloseEdit.ForeColor = System.Drawing.Color.White;
-            this.btCloseEdit.Location = new System.Drawing.Point(585, 10);
+            this.btCloseEdit.Location = new System.Drawing.Point(392, 10);
             this.btCloseEdit.Margin = new System.Windows.Forms.Padding(0);
             this.btCloseEdit.Name = "btCloseEdit";
             this.btCloseEdit.Size = new System.Drawing.Size(134, 29);
@@ -379,29 +375,6 @@
             this.btCloseEdit.UseVisualStyleBackColor = false;
             this.btCloseEdit.Click += new System.EventHandler(this.btCloseEdit_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.label2.Location = new System.Drawing.Point(298, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 22);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "PBA code";
-            // 
-            // cbbPBAcodeFilter
-            // 
-            this.cbbPBAcodeFilter.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cbbPBAcodeFilter.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbbPBAcodeFilter.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbbPBAcodeFilter.FormattingEnabled = true;
-            this.cbbPBAcodeFilter.Location = new System.Drawing.Point(392, 10);
-            this.cbbPBAcodeFilter.Name = "cbbPBAcodeFilter";
-            this.cbbPBAcodeFilter.Size = new System.Drawing.Size(188, 29);
-            this.cbbPBAcodeFilter.TabIndex = 8;
-            this.cbbPBAcodeFilter.SelectedIndexChanged += new System.EventHandler(this.FilterChange);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -409,9 +382,9 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
             this.label1.Location = new System.Drawing.Point(9, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 22);
+            this.label1.Size = new System.Drawing.Size(63, 22);
             this.label1.TabIndex = 7;
-            this.label1.Text = "Assy code";
+            this.label1.Text = "Search";
             // 
             // cbbAssyCodeFilter
             // 
@@ -419,11 +392,12 @@
             this.cbbAssyCodeFilter.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbbAssyCodeFilter.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbbAssyCodeFilter.FormattingEnabled = true;
-            this.cbbAssyCodeFilter.Location = new System.Drawing.Point(106, 10);
+            this.cbbAssyCodeFilter.Location = new System.Drawing.Point(78, 10);
             this.cbbAssyCodeFilter.Name = "cbbAssyCodeFilter";
-            this.cbbAssyCodeFilter.Size = new System.Drawing.Size(186, 29);
+            this.cbbAssyCodeFilter.Size = new System.Drawing.Size(311, 29);
             this.cbbAssyCodeFilter.TabIndex = 4;
             this.cbbAssyCodeFilter.SelectedIndexChanged += new System.EventHandler(this.FilterChange);
+            this.cbbAssyCodeFilter.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cbbAssyCodeFilter_PreviewKeyDown);
             // 
             // panel4
             // 
@@ -879,8 +853,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox cbbAssyCodeFilter;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbbPBAcodeFilter;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel pnDataEdit;

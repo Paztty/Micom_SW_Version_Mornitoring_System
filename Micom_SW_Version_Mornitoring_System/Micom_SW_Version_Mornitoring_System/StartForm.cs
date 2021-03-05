@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,43 +16,12 @@ namespace Micom_SW_Version_Mornitoring_System
 {
     public partial class StartForm : Form
     {
-        MySQL mySQL = new MySQL();
+        MySQLDatabase database = new MySQLDatabase();
         public StartForm()
         {
-
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
-
             InitializeComponent();
-            try
-            {
-                if (!Directory.Exists(@"C:\DEV\MSWS")) Directory.CreateDirectory(@"C:\DEV\MSWS");
-                if (File.Exists(@"C:\DEV\MSWS\config.txt"))
-                {
-                    lbLine.Text = File.ReadAllText(@"C:\DEV\MSWSconfig.txt");
-                }
-
-                if (!File.Exists(@"C:\DEV\MSWS\databaseConfig.cfg"))
-                {
-                    string connecStr = JsonSerializer.Serialize(mySQL);
-                    File.WriteAllText(@"C:\DEV\MSWS\databaseConfig.cfg", connecStr);
-                }
-                else
-                {
-                    string str = File.ReadAllText(@"C:\DEV\MSWS\databaseConfig.cfg");
-                    mySQL = JsonSerializer.Deserialize<MySQL>(str);
-                }
-            }
-            catch (Exception)
-            { }
-
-            String firstMacAddress = NetworkInterface
-                    .GetAllNetworkInterfaces()
-                    .Where(nic => nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
-                    .Select(nic => nic.GetPhysicalAddress().ToString())
-                    .FirstOrDefault();
-            Console.WriteLine(firstMacAddress);
-
+            //SetStartup();
         }
         private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -66,6 +36,18 @@ namespace Micom_SW_Version_Mornitoring_System
             }
             return null;
         }
+
+        //Startup registry key and value
+        private static readonly string StartupKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private static readonly string StartupValue = "MSWS";
+
+        private static void SetStartup()
+        {
+            //Set the application to run at startup
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+            key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+        }
+
         #region Form control  
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -85,13 +67,18 @@ namespace Micom_SW_Version_Mornitoring_System
         private void btClose_Click(object sender, EventArgs e)
         {
             this.Close();
+            Environment.Exit(Environment.ExitCode);
             Application.Exit();
+        }
+        private void btMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
         #endregion
 
         private void btManager_Click(object sender, EventArgs e)
         {
-            if (mySQL.TestConnection())
+            if (database.Connect())
             {
                 if (changePassFlag)
                 {
@@ -101,18 +88,18 @@ namespace Micom_SW_Version_Mornitoring_System
                     }
                     else
                     {
-                        if (mySQL.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
+                        if (database.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
                         {
                             if (tbNewPass.Text == tbRetype.Text)
                             {
-                                lbEngNotification.Text = "Change user password " + mySQL.AccountChangePass(tbUser.Text, tbNewPass.Text);
+                                lbEngNotification.Text = "Change user password " + database.AccountChangePass(tbUser.Text, tbNewPass.Text);
                             }
                         }
                     }
                 }
                 else
                 {
-                    if (mySQL.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
+                    if (database.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
                     {
                         ManagerForm managerForm = new ManagerForm();
                         this.Hide();
@@ -122,7 +109,7 @@ namespace Micom_SW_Version_Mornitoring_System
                     else
                     {
                         //lbVieNotification.Text = "Tài khoản hoặc mật khẩu không chính xác. Trong trường hợp quên mật khẩu vui lòng liên hệ quản trị viên: 0346809230.";
-                        lbEngNotification.Text = "Account or password is incorrect. In case of forgetting the password, please contact the administrator: 0346809230.";
+                        lbEngNotification.Text = "Account or password is incorrect. In case of forgetting the password, please contact support.";
                     }
                 }
             }
@@ -179,36 +166,14 @@ namespace Micom_SW_Version_Mornitoring_System
             this.Show();
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            if (mySQL.TestConnection())
+            ConnectString connectString = new ConnectString();
+            if (connectString.ShowDialog() == DialogResult.OK)
             {
-                string lineStatus = File.ReadAllText(@"C:\Auto Micom Writing\AMW\status.txt");
-                string line = File.ReadAllText(@"C:\DEV\MSWS\config.txt");
-                mySQL.UpdateRunStopStatus(lineStatus, line);
+                database = new MySQLDatabase();
             }
-            timer.Interval = 5000;
-        }
-        private void StartForm_Load(object sender, EventArgs e)
-        {
-            if (mySQL.TestConnection())
-            {
-                if (File.Exists(@"C:\Auto Micom Writing\AMW\status.txt") && File.Exists(@"C:\DEV\MSWS\config.txt"))
-                {
-                    string lineStatus = File.ReadAllText(@"C:\Auto Micom Writing\AMW\status.txt");
-                    string line = File.ReadAllText(@"C:\DEV\MSWS\config.txt");
-                    mySQL.UpdateRunStopStatus(lineStatus, line);
-                    timer.Start();
-                }
-            }
-        }
-        private void StartForm_DoubleClick(object sender, EventArgs e)
-        {
-            
-        }
-        private void btMinimize_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
+
         }
     }
 }

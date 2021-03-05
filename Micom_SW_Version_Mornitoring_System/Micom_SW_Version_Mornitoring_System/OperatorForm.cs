@@ -16,7 +16,9 @@ namespace Micom_SW_Version_Mornitoring_System
 {
     public partial class OperatorForm : Form
     {
-        MySQL mySQL = new MySQL();
+        MySQLDatabase database = new MySQLDatabase();
+
+        string lastUpdateTime = "";
         int sellectedRow = -1;
         Model Model = new Model();
         DataTable dataTable { get; set; } = new DataTable();
@@ -26,11 +28,16 @@ namespace Micom_SW_Version_Mornitoring_System
             typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic |
             BindingFlags.Instance | BindingFlags.SetProperty, null,
             dgvSWVersionMornitor, new object[] { true });
-            CreatDataTable();
+
+
             string line = "";
             try
             {
-                line = File.ReadAllText(@"C:\DEV\MSWS\config.txt");
+                if (File.Exists(@"C:\DEV\MSWS\config.txt"))
+                {
+                    line = File.ReadAllText(@"C:\DEV\MSWS\config.txt");
+                }
+                
             }
             catch (Exception) { }
             if (line.Length > 2)
@@ -86,56 +93,23 @@ namespace Micom_SW_Version_Mornitoring_System
         {
             timerUpdateData.Interval = 10;
             timerUpdateData.Start();
-            getLineLocation();
-            
         }
-        private void CreatDataTable()
-        {
-            dataTable.Columns.Add("Master Data");
-            dataTable.Columns.Add("Model");
-            dataTable.Columns.Add("Writing Area");
-            dataTable.Columns.Add("Assy Code");
-            dataTable.Columns.Add("PBA Code");
-            dataTable.Columns.Add("PCB Code");
-            dataTable.Columns.Add("MainAssy Micom Code");
-            dataTable.Columns.Add("MainMicom Name");
-            dataTable.Columns.Add("MainChecksum");
-            dataTable.Columns.Add("MainVersion");
-            dataTable.Columns.Add("MainApply day");
-            dataTable.Columns.Add("InvAssy Micom Code");
-            dataTable.Columns.Add("InvMicom Name");
-            dataTable.Columns.Add("InvChecksum");
-            dataTable.Columns.Add("InvVersion");
-            dataTable.Columns.Add("InvApply day");
-            dataTable.Columns.Add("Last user");
 
-            dgvSWVersionMornitor.DataSource = dataTable;
-            foreach (DataGridViewColumn column in dgvSWVersionMornitor.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
-            dgvSWVersionMornitor.Columns[0].Visible = false;
-        }
         private void UpdateFromServer()
         {
-            try
+            if (database.Connect())
             {
-                dgvSWVersionMornitor.Invoke(new MethodInvoker(delegate
-                {
-                    mySQL.TestConnection();
-                    mySQL.GetDataFromTable("Micom SW Version");
-                    mySQL.LoadToDataTable(dataTable, "Micom SW Version");
-                }));
+                database.UpdateData("Micom SW Version", dataTable, lastUpdateTime);
+                Console.WriteLine(lastUpdateTime);
             }
-            catch (Exception) { timerUpdateData.Stop(); }
         }
 
         List<string> line = new List<string>();
         public void getLineLocation()
         {
-            if (mySQL.TestConnection())
+            if (database.Connect())
             {
-                mySQL.getLineList(line);
+                database.getLineList(line);
                 cbbLine.Items.AddRange(line.ToArray());
             }
             else
@@ -145,22 +119,32 @@ namespace Micom_SW_Version_Mornitoring_System
         {
             if (timerUpdateData.Interval == 10)
             {
-                if (mySQL.TestConnection())
+                if (database.Connect())
                 {
-
-                    UpdateFromServer();
+                    getLineLocation();
+                    database.CreatTableFromServer("Micom SW Version", dataTable);
+                    database.GetDataFromTable("Micom SW Version", dataTable);
+                    dgvSWVersionMornitor.DataSource = dataTable;
+                    foreach (DataGridViewColumn column in dgvSWVersionMornitor.Columns)
+                    {
+                        column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                        if (column.Name == "Master Data")
+                        {
+                            column.Visible = false;
+                        }
+                    }
                     for (int i = 0; i < dataTable.Rows.Count; i++)
                     {
-                        if (!cbbPBAcodeFilter.Items.Contains(dataTable.Rows[i].ItemArray[4].ToString()))
+                        if (!cbbAssyCodeFilter.Items.Contains(dataTable.Rows[i].ItemArray[4].ToString()))
                         {
-                            cbbPBAcodeFilter.Items.Add(dataTable.Rows[i].ItemArray[4].ToString());
+                            cbbAssyCodeFilter.Items.Add(dataTable.Rows[i].ItemArray[4].ToString());
                         }
                         if (!cbbAssyCodeFilter.Items.Contains(dataTable.Rows[i].ItemArray[3].ToString()))
                         {
                             cbbAssyCodeFilter.Items.Add(dataTable.Rows[i].ItemArray[3].ToString());
                         }
                     }
-                    timerUpdateData.Interval = 30000;
+                    timerUpdateData.Interval = 3000;
                     lbLoading.Hide();
                 }
                 else
@@ -170,7 +154,9 @@ namespace Micom_SW_Version_Mornitoring_System
             }
             else
             {
-                UpdateFromServer();
+              string lastTime = database.UpdateData("Micom SW Version", dataTable, lastUpdateTime);
+              lastUpdateTime = lastTime;
+              Console.WriteLine(lastUpdateTime);
             }
         }
         private void dgvSWVersionMornitor_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -185,10 +171,9 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void FilterChange(object sender, EventArgs e)
         {
-            Console.WriteLine(cbbAssyCodeFilter.Text + " " + cbbPBAcodeFilter.Text);
             CurrencyManager currencyManager = (CurrencyManager)BindingContext[dgvSWVersionMornitor.DataSource];
             currencyManager.SuspendBinding();
-            if (cbbAssyCodeFilter.Text.Length < 2 && cbbPBAcodeFilter.Text.Length < 2)
+            if (cbbAssyCodeFilter.Text.Length < 2)
             {
                 for (int row = 0; row < dgvSWVersionMornitor.RowCount; row++)
                 {
@@ -204,7 +189,7 @@ namespace Micom_SW_Version_Mornitoring_System
                 for (int row = 0; row < dgvSWVersionMornitor.RowCount; row++)
                 {
                     bool exitted = false;
-                    if (dgvSWVersionMornitor[3, row].Value.ToString().Contains(cbbAssyCodeFilter.Text) && (dgvSWVersionMornitor[4, row].Value.ToString().Contains(cbbPBAcodeFilter.Text)))
+                    if (dgvSWVersionMornitor[3, row].Value.ToString().Contains(cbbAssyCodeFilter.Text) || (dgvSWVersionMornitor[4, row].Value.ToString().Contains(cbbAssyCodeFilter.Text)))
                     {
                         dgvSWVersionMornitor[3, row].Style.BackColor = Color.YellowGreen;
                         dgvSWVersionMornitor[4, row].Style.BackColor = Color.YellowGreen;
@@ -227,7 +212,6 @@ namespace Micom_SW_Version_Mornitoring_System
             for (int row = 0; row < dgvSWVersionMornitor.RowCount; row++)
             {
                 cbbAssyCodeFilter.Text = "";
-                cbbPBAcodeFilter.Text = "";
                 dgvSWVersionMornitor.Rows[row].Visible = true;
                 for (int column = 0; column < dgvSWVersionMornitor.ColumnCount; column++)
                 {
@@ -238,19 +222,27 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void btModelSellect_Click(object sender, EventArgs e)
         {
-            if (cbbLine.Text != null)
+            if (sellectedRow != -1)
             {
-                panel5.Enabled = false;
-                lbLoading.Text = "Loading.....";
-                lbLoading.Show();
-                string result = mySQL.UpdateUsedModel(Model, cbbLine.Text);
-                lbLoading.Text = result;
-                var options = new JsonSerializerOptions
+                if (cbbLine.Text != null)
                 {
-                    WriteIndented = true
-                };
-                string ModelStr = JsonSerializer.Serialize(Model, options);
-                File.WriteAllText(@"C:\Auto Micom Writing\AMW\model.txt", ModelStr);
+                    panel5.Enabled = false;
+                    lbLoading.Text = "Loading.....";
+                    lbLoading.Show();
+                    string result = database.UpdateUsedModel(Model, cbbLine.Text);
+                    lbLoading.Text = result;
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    };
+                    string ModelStr = JsonSerializer.Serialize(Model, options);
+                    File.WriteAllText(@"C:\Auto Micom Writing\AMW\model.txt", ModelStr);
+                }
+            }
+            else
+            {
+                lbLoading.Text = "Select one model.";
+                lbLoading.Show();
             }
         }
 
@@ -270,8 +262,6 @@ namespace Micom_SW_Version_Mornitoring_System
             if (Model.ROMs[0].DateApply.Contains('/'))
             {
                 string[] dateStr = Model.ROMs[0].DateApply.Split('/');
-                Console.WriteLine(dateStr[0] + " " + dateStr[1] + " " + dateStr[2]);
-                Console.WriteLine(Convert.ToInt32(dateStr[0]) + " " + Convert.ToInt32(dateStr[1]) + " " + Convert.ToInt32(dateStr[2]));
                 try
                 {
                     DateTime date = new DateTime(Convert.ToInt32(dateStr[2]), Convert.ToInt32(dateStr[1]), Convert.ToInt32(dateStr[0]));
@@ -321,15 +311,53 @@ namespace Micom_SW_Version_Mornitoring_System
             lbLoading.Hide();
         }
 
-        private void cbbLine_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void label3_Click(object sender, EventArgs e)
         {
             File.WriteAllText(@"C:\DEV\MSWS\config.txt", cbbLine.Text);
             cbbLine.Enabled = false;
+        }
+
+        private void cbbAssyCodeFilter_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                sellectedRow = -1;
+                CurrencyManager currencyManager = (CurrencyManager)BindingContext[dgvSWVersionMornitor.DataSource];
+                currencyManager.SuspendBinding();
+                if (cbbAssyCodeFilter.Text.Length < 2)
+                {
+                    for (int row = 0; row < dgvSWVersionMornitor.RowCount; row++)
+                    {
+                        dgvSWVersionMornitor.Rows[row].Visible = true;
+                        for (int column = 0; column < dgvSWVersionMornitor.ColumnCount; column++)
+                        {
+                            dgvSWVersionMornitor[column, row].Style.BackColor = Color.FromArgb(189, 204, 217);
+                        }
+                    }
+                }
+                else
+                {
+                    cbbAssyCodeFilter.Text = cbbAssyCodeFilter.Text.ToUpper();
+                    for (int row = 0; row < dgvSWVersionMornitor.RowCount; row++)
+                    {
+                        bool exitted = false;
+                        for (int column = 0; column < dgvSWVersionMornitor.ColumnCount; column++)
+                        {
+                            if (dgvSWVersionMornitor[column, row].Value.ToString().Contains(cbbAssyCodeFilter.Text))
+                            {
+                                dgvSWVersionMornitor[column, row].Style.BackColor = Color.YellowGreen;
+                                exitted = true;
+                            }
+                            else
+                            {
+                                dgvSWVersionMornitor[column, row].Style.BackColor = Color.FromArgb(189, 204, 217);
+                            }
+                        }
+                        dgvSWVersionMornitor.Rows[row].Visible = exitted;
+                    }
+                }
+                currencyManager.ResumeBinding();
+            }
         }
     }
 }

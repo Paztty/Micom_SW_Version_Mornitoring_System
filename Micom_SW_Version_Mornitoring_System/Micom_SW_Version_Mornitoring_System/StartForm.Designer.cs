@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartForm));
             this.button1 = new System.Windows.Forms.Button();
             this.btMornitoring = new System.Windows.Forms.Button();
@@ -46,9 +45,9 @@
             this.tbNewPass = new System.Windows.Forms.TextBox();
             this.lbRetype = new System.Windows.Forms.Label();
             this.tbRetype = new System.Windows.Forms.TextBox();
-            this.timer = new System.Windows.Forms.Timer(this.components);
             this.lbLine = new System.Windows.Forms.Label();
             this.btMinimize = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -59,9 +58,9 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.button1.Location = new System.Drawing.Point(43, 337);
+            this.button1.Location = new System.Drawing.Point(79, 337);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(250, 41);
+            this.button1.Size = new System.Drawing.Size(230, 41);
             this.button1.TabIndex = 0;
             this.button1.Text = "Operator";
             this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -76,9 +75,9 @@
             this.btMornitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btMornitoring.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btMornitoring.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.btMornitoring.Location = new System.Drawing.Point(299, 337);
+            this.btMornitoring.Location = new System.Drawing.Point(315, 337);
             this.btMornitoring.Name = "btMornitoring";
-            this.btMornitoring.Size = new System.Drawing.Size(238, 41);
+            this.btMornitoring.Size = new System.Drawing.Size(222, 41);
             this.btMornitoring.TabIndex = 1;
             this.btMornitoring.Text = "Monitoring";
             this.btMornitoring.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -179,11 +178,11 @@
             this.lbVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
             this.lbVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbVersion.ForeColor = System.Drawing.SystemColors.Control;
-            this.lbVersion.Location = new System.Drawing.Point(102, 9);
+            this.lbVersion.Location = new System.Drawing.Point(8, 381);
             this.lbVersion.Name = "lbVersion";
-            this.lbVersion.Size = new System.Drawing.Size(319, 19);
+            this.lbVersion.Size = new System.Drawing.Size(166, 19);
             this.lbVersion.TabIndex = 11;
-            this.lbVersion.Text = "Ver 1.0 Release 10/2/2021";
+            this.lbVersion.Text = "Ver 1.0  Release 4/3/2021";
             this.lbVersion.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lbEngNotification
@@ -255,11 +254,6 @@
             this.tbRetype.TabIndex = 15;
             this.tbRetype.Visible = false;
             // 
-            // timer
-            // 
-            this.timer.Interval = 5000;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
             // lbLine
             // 
             this.lbLine.AutoSize = true;
@@ -292,6 +286,20 @@
             this.btMinimize.UseVisualStyleBackColor = false;
             this.btMinimize.Click += new System.EventHandler(this.btMinimize_Click);
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Transparent;
+            this.button2.BackgroundImage = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.worldwide;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(22, 337);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(37, 41);
+            this.button2.TabIndex = 19;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // StartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,6 +309,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(869, 405);
             this.ControlBox = false;
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.btMinimize);
             this.Controls.Add(this.lbLine);
             this.Controls.Add(this.lbRetype);
@@ -327,8 +336,6 @@
             this.MinimizeBox = false;
             this.Name = "StartForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.StartForm_Load);
-            this.DoubleClick += new System.EventHandler(this.StartForm_DoubleClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -353,8 +360,8 @@
         private System.Windows.Forms.TextBox tbNewPass;
         private System.Windows.Forms.Label lbRetype;
         private System.Windows.Forms.TextBox tbRetype;
-        private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label lbLine;
         private System.Windows.Forms.Button btMinimize;
+        private System.Windows.Forms.Button button2;
     }
 }
