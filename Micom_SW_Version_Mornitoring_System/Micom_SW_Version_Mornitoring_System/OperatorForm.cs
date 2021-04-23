@@ -99,31 +99,16 @@ namespace Micom_SW_Version_Mornitoring_System
         {
             if (database.Connect())
             {
-                database.UpdateData("Micom SW Version", dataTable, lastUpdateTime);
-                Console.WriteLine(lastUpdateTime);
-            }
-        }
-
-        List<string> line = new List<string>();
-        public void getLineLocation()
-        {
-            if (database.Connect())
-            {
                 database.getLineList(line);
-                cbbLine.Items.AddRange(line.ToArray());
-            }
-            else
-                lbLoading.Text = "Connection fail.";
-        }
-        private void timerUpdateData_Tick(object sender, EventArgs e)
-        {
-            if (timerUpdateData.Interval == 10)
-            {
-                if (database.Connect())
+                cbbLine.Invoke(new MethodInvoker(delegate
                 {
-                    getLineLocation();
-                    database.CreatTableFromServer("Micom SW Version", dataTable);
-                    database.GetDataFromTable("Micom SW Version", dataTable);
+                    cbbLine.Items.AddRange(line.ToArray());
+                }));
+
+                database.CreatTableFromServer("Micom SW Version", dataTable);
+                database.GetDataFromTable("Micom SW Version", dataTable);
+                dgvSWVersionMornitor.Invoke(new MethodInvoker(delegate
+                {
                     dgvSWVersionMornitor.DataSource = dataTable;
                     foreach (DataGridViewColumn column in dgvSWVersionMornitor.Columns)
                     {
@@ -145,12 +130,27 @@ namespace Micom_SW_Version_Mornitoring_System
                         }
                     }
                     timerUpdateData.Interval = 3000;
+                    timerUpdateData.Start();
                     lbLoading.Hide();
-                }
-                else
+                }));
+            }
+            else
+            {
+                lbLoading.Invoke(new MethodInvoker(delegate
                 {
                     lbLoading.Text = "Connection fail.";
-                }
+                }));
+            }
+        }
+
+        List<string> line = new List<string>();
+        private void timerUpdateData_Tick(object sender, EventArgs e)
+        {
+            if (timerUpdateData.Interval == 10)
+            {
+                timerUpdateData.Stop();
+                Thread thread = new Thread(UpdateFromServer);
+                thread.Start();
             }
             else
             {

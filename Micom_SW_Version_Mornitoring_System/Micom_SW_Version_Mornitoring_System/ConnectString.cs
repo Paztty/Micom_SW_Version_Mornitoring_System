@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,36 +16,23 @@ namespace Micom_SW_Version_Mornitoring_System
     public partial class ConnectString : Form
     {
         MySQLDatabase database = new MySQLDatabase();
-        string connectionStr = @"Data Source=172.22.14.220;Initial Catalog=Tech;User ID=sa;Password=123456";
-
+        bool result = false;
         public ConnectString()
         {
             InitializeComponent();
             btApply.Enabled = false;
+            loaddingBox.Hide();
         }
 
         private void btMornitoring_Click(object sender, EventArgs e)
         {
-            lbIPserver.Text = "IP SERVER ( " + textBox1.Text + " ) CONNECTING ";
-            Thread thread = new Thread(TestConnecttion);
-            thread.Start();
-        }
-
-        public void TestConnecttion()
-        {
-            string connectStr = @"Data Source=" + textBox1.Text + ";Initial Catalog=Tech;User ID=sa;Password=123456";
-            lbIPserver.Invoke(new MethodInvoker(delegate { 
-                if (database.Connect(connectStr))
-                {
-                    lbIPserver.Text += " - OK";
-                    btApply.Enabled = true;
-                }
-                else
-                {
-                    lbIPserver.Text += " - FAIL";
-                    btApply.Enabled = false;
-                }
-            }));
+            var IP = textBox1.Text;
+            lbIPserver.Text = "IP SERVER ( " + IP + " ) CONNECTING";
+            loaddingBox.Show();
+            btApply.Enabled = false;
+            btMornitoring.Enabled = false;
+            textBox1.Enabled = false;
+            bgwTestConnect.RunWorkerAsync();
         }
 
         private void btManager_Click(object sender, EventArgs e)
@@ -54,9 +42,41 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void btApply_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(@"C:\MSWS\")) Directory.CreateDirectory(@"C:\MSWS\");
-            File.WriteAllText(@"C:\MSWS\databaseConfig.txt", @"Data Source=" + textBox1.Text);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
+            {
+                DataSource = textBox1.Text,
+                InitialCatalog = "Tech",
+                UserID = "micom",
+                Password = "tech@12",
+            };
+            Console.WriteLine(builder.DataSource);
+            File.WriteAllText("databaseConfig.txt", Protecter.Encode(builder.ConnectionString));
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void bgwTestConnect_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var IP = textBox1.Text;
+            result = database.Connect(IP);
+        }
+
+        private void bgwTestConnect_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            var IP = textBox1.Text;
+            loaddingBox.Hide();
+            btApply.Enabled = true;
+            btMornitoring.Enabled = true;
+            textBox1.Enabled = true;
+
+            Console.WriteLine("test done");
+            if (result)
+            {
+                lbIPserver.Text = "IP SERVER ( " + IP + " ) CONNECT OK";
+            }
+            else
+            {
+                lbIPserver.Text = "IP SERVER ( " + IP + " ) CONNECT FAIL";
+            }
         }
     }
 }

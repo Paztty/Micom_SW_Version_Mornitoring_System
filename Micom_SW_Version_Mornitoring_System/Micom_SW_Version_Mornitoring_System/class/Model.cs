@@ -59,4 +59,33 @@ namespace Micom_SW_Version_Mornitoring_System
         }
     }
 
+    class EEPROM
+    {
+        public string KeyCode = "";
+        public string Company = "";
+        public string KitCode = "";
+        public string MainPCBAssyCode = "";
+        public string MainPCBCode = "";
+        public string SubPCBAssyCode = "";
+        public string SubPCBCode = "";
+        public string EEPROMOption = "";
+        public string EEPROMAssyCode = "";
+        public string EEPROMPacket = "";
+
+        public EEPROM() { }
+        public void GetData(System.Windows.Forms.DataGridView table, int rowIndex)
+        {
+             KeyCode =          table[0, rowIndex].Value.ToString();
+             Company =          table[1, rowIndex].Value.ToString();
+             KitCode =          table[2, rowIndex].Value.ToString();
+             MainPCBAssyCode =  table[3, rowIndex].Value.ToString();
+             MainPCBCode =      table[4, rowIndex].Value.ToString();
+             SubPCBAssyCode =   table[5, rowIndex].Value.ToString();
+             SubPCBCode =       table[6, rowIndex].Value.ToString();
+             EEPROMOption =     table[7, rowIndex].Value.ToString();
+             EEPROMAssyCode =   table[8, rowIndex].Value.ToString();
+             EEPROMPacket =     table[9, rowIndex].Value.ToString();
+        }
+
+    }
 }

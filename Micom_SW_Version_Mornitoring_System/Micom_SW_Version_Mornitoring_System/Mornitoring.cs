@@ -50,45 +50,20 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void Mornitoring_Load(object sender, EventArgs e)
         {
-            //dataTable.Columns.Add("LINE");
-            //dataTable.Columns.Add("PCB CODE");
-            //dataTable.Columns.Add("PBA CODE");
-            //dataTable.Columns.Add("MAIN MICOM ASSCODE");
-            //dataTable.Columns.Add("MAIN MICOM CHECKSUM");
-            //dataTable.Columns.Add("MAIN MICOM VERSION");
-            //dataTable.Columns.Add("INV MICOM ASSCODE");
-            //dataTable.Columns.Add("INV MICOM CHECKSUM");
-            //dataTable.Columns.Add("INV MICOM VERSION");
-            //dataTable.Columns.Add("UPDATE TIME");
-            //dataTable.Columns.Add("STATUS");
-
-
-            //dataTable.Columns.Add("Column1");
-            //dataTable.Columns.Add("Column2");
-            //dataTable.Columns.Add("Column3");
-            //dataTable.Columns.Add("Column4");
-            //dataTable.Columns.Add("Column5");
-            //dataTable.Columns.Add("Column6");
-            //dataTable.Columns.Add("Column7");
-            //dataTable.Columns.Add("Column8");
-            //dataTable.Columns.Add("Column9");
-            //dataTable.Columns.Add("Column10");
-            //dataTable.Columns.Add("Column11");
-
             timerUpdate.Interval = 10;
             timerUpdate.Start();
             lbLoading.Text = "Loading.....";
             lbLoading.Show();
-        }
 
-        private void timerUpdate_Tick(object sender, EventArgs e)
+        }
+        void loading()
         {
-            if (timerUpdate.Interval == 10)
+            if (mySQL.Connect())
             {
-                if (mySQL.Connect())
-                {
-                    mySQL.GetDataFromTable("MicomVersionMornitor", dataTable);
-                    lastUpdateTime = mySQL.UpdateData("MicomVersionMornitor", dataTable, lastUpdateTime);
+                mySQL.GetDataFromTable("MicomVersionMornitor", dataTable);
+                lastUpdateTime = mySQL.UpdateData("MicomVersionMornitor", dataTable, lastUpdateTime);
+                lbLoading.Invoke(new MethodInvoker(delegate {
+                    lbLoading.Hide();
                     dgwMicomSWMonitoring.DataSource = dataTable;
                     for (int i = 0; i < dgwMicomSWMonitoring.Rows.Count; i++)
                     {
@@ -106,40 +81,52 @@ namespace Micom_SW_Version_Mornitoring_System
                         }
                         try
                         {
-                            if (dgwMicomSWMonitoring[10, i].Value != null)
+                            if (dgwMicomSWMonitoring[columnName: "Status", i].Value != null)
                             {
-                                if (dgwMicomSWMonitoring[10, i].Value.ToString() == "STOP")
+                                if (dgwMicomSWMonitoring[columnName: "Status", i].Value.ToString() == "STOP")
                                 {
-                                    dgwMicomSWMonitoring[0, i].Style.BackColor = Color.FromArgb(170, 0, 0);
+                                    dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(170, 0, 0);
                                 }
-                                else if (dgwMicomSWMonitoring[10, i].Value.ToString() == "RUNNING")
+                                else if (dgwMicomSWMonitoring[columnName: "Status", i].Value.ToString() == "RUNNING")
                                 {
-                                    dgwMicomSWMonitoring[0, i].Style.BackColor = Color.FromArgb(0, 128, 0);
+                                    dgwMicomSWMonitoring[columnName:"Line", i].Style.BackColor = Color.FromArgb(0, 128, 0);
                                 }
                                 else
                                 {
-                                    dgwMicomSWMonitoring[0, i].Style.BackColor = Color.FromArgb(85, 85, 85);
+                                    dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(85, 85, 85);
                                 }
                             }
                         }
                         catch (Exception) { }
                     }
-                    dgwMicomSWMonitoring.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    dgwMicomSWMonitoring.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     dgwMicomSWMonitoring[0, 0].Selected = false;
                     dgwMicomSWMonitoring.ScrollBars = ScrollBars.None;
                     dgwMicomSWMonitoring.Enabled = false;
-                    timerUpdate.Interval = 5000;
+                    timerUpdate.Interval = 10000;
+                    timerUpdate.Start();
                     lbLoading.Hide();
-                }
- 
+                }));
             }
             else
             {
+                lbLoading.Invoke(new MethodInvoker(delegate { lbLoading.Text = "Connect fail."; }));
+            }
+        }
 
+        private void timerUpdate_Tick(object sender, EventArgs e)
+        {
+            if (timerUpdate.Interval == 10)
+            {
+                timerUpdate.Stop();
+                Thread thread = new Thread(loading);
+                thread.Start();
+            }
+            else
+            {
                 if (mySQL.Connect())
                 {
                     string lastUpdateMoment = mySQL.UpdateData("MicomVersionMornitor", dataTable, lastUpdateTime);
+
                     if (lastUpdateMoment != lastUpdateTime)
                     {
                         lastUpdateTime = lastUpdateMoment;
@@ -159,33 +146,114 @@ namespace Micom_SW_Version_Mornitoring_System
                             }
                             try
                             {
-                                if (dgwMicomSWMonitoring[10, i].Value != null)
+                                if (dgwMicomSWMonitoring[columnName: "Status", i].Value != null)
                                 {
-                                    if (dgwMicomSWMonitoring[10, i].Value.ToString() == "STOP")
+                                    if (dgwMicomSWMonitoring[columnName: "Status", i].Value.ToString() == "STOP")
                                     {
-                                        dgwMicomSWMonitoring[0, i].Style.BackColor = Color.FromArgb(170, 0, 0);
+                                        dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(170, 0, 0);
                                     }
-                                    else if (dgwMicomSWMonitoring[10, i].Value.ToString() == "RUNNING")
+                                    else if (dgwMicomSWMonitoring[columnName: "Status", i].Value.ToString() == "RUNNING")
                                     {
-                                        dgwMicomSWMonitoring[0, i].Style.BackColor = Color.FromArgb(0, 128, 0);
+                                        dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(0, 128, 0);
                                     }
                                     else
                                     {
-                                        dgwMicomSWMonitoring[0, i].Style.BackColor = Color.FromArgb(85, 85, 85);
+                                        dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(85, 85, 85);
                                     }
                                 }
+
                             }
                             catch (Exception) { }
                         }
-                        dgwMicomSWMonitoring.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        dgwMicomSWMonitoring.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                         dgwMicomSWMonitoring[0, 0].Selected = false;
                         dgwMicomSWMonitoring.ScrollBars = ScrollBars.None;
                         dgwMicomSWMonitoring.Enabled = false;
                     }
                 }
+                else
+                    for (int i = 0; i < dgwMicomSWMonitoring.Rows.Count; i++)
+                    {
+                        if (i < 3)
+                        {
+                            dgwMicomSWMonitoring.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(47, 56, 37);
+                        }
+                        else if (i < 8)
+                        {
+                            dgwMicomSWMonitoring.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(85, 56, 28);
+                        }
+                        else
+                        {
+                            dgwMicomSWMonitoring.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(96, 103, 120);
+                        }
+                        try
+                        {
+                            if (dgwMicomSWMonitoring[columnName: "Status", i].Value != null)
+                            {
+                                if (dgwMicomSWMonitoring[columnName: "Status", i].Value.ToString() == "STOP")
+                                {
+                                    dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(170, 0, 0);
+                                }
+                                else if (dgwMicomSWMonitoring[columnName: "Status", i].Value.ToString() == "RUNNING")
+                                {
+                                    dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(0, 128, 0);
+                                }
+                                else
+                                {
+                                    dgwMicomSWMonitoring[columnName: "Line", i].Style.BackColor = Color.FromArgb(85, 85, 85);
+                                }
+                            }
+                        }
+                        catch (Exception) { }
+                    }
+                dgwMicomSWMonitoring[0, 0].Selected = false;
+                dgwMicomSWMonitoring.ScrollBars = ScrollBars.None;
+                dgwMicomSWMonitoring.Enabled = false;
+                timerUpdate.Interval = 10000;
+                timerUpdate.Start();
+                lbLoading.Hide();
             }
         }
+        bool IsTheSameCellValue(int column, int row)
+        {
+            DataGridViewCell cell1 = dgwMicomSWMonitoring[column, row];
+            DataGridViewCell cell2 = dgwMicomSWMonitoring[column, row - 1];
+            if (cell1.Value == null || cell2.Value == null)
+            {
+                return false;
+            }
+            return cell1.Value.ToString() == cell2.Value.ToString();
+        }
+
+        public void addArea()
+        {
+            try
+            {
+                dgwMicomSWMonitoring[columnName: "AREA", 0].Value = "DISPLAY";
+                dgwMicomSWMonitoring[columnName: "AREA", 1].Value = "DISPLAY";
+                dgwMicomSWMonitoring[columnName: "AREA", 2].Value = "DISPLAY";
+
+                dgwMicomSWMonitoring[columnName: "AREA", 3].Value = "MI_D";
+                dgwMicomSWMonitoring[columnName: "AREA", 4].Value = "MI_D";
+                dgwMicomSWMonitoring[columnName: "AREA", 5].Value = "MI_D";
+                dgwMicomSWMonitoring[columnName: "AREA", 6].Value = "MI_D";
+                dgwMicomSWMonitoring[columnName: "AREA", 7].Value = "MI_D";
+
+                dgwMicomSWMonitoring[columnName: "AREA", 8].Value = "MI_S";
+                dgwMicomSWMonitoring[columnName: "AREA", 9].Value = "MI_S";
+                dgwMicomSWMonitoring[columnName: "AREA", 10].Value = "MI_S";
+                dgwMicomSWMonitoring[columnName: "AREA", 11].Value = "MI_S";
+                dgwMicomSWMonitoring[columnName: "AREA", 12].Value = "MI_S";
+                dgwMicomSWMonitoring[columnName: "AREA", 13].Value = "MI_S";
+                dgwMicomSWMonitoring[columnName: "AREA", 14].Value = "MI_S";
+
+            }
+            catch(Exception err)
+            {
+                //Console.WriteLine(err.Message);
+            }
+        
+        }
+
 
         private void FormControlClick(object sender, EventArgs e)
         {
@@ -216,7 +284,37 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void dgwMicomSWMonitoring_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
+            addArea();
+        }
 
+        private void dgwMicomSWMonitoring_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.ColumnIndex > 0)
+                return;
+            e.AdvancedBorderStyle.Bottom = DataGridViewAdvancedCellBorderStyle.None;
+            if (e.RowIndex < 1 || e.ColumnIndex < 0)
+                return;
+            if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
+            {
+                e.AdvancedBorderStyle.Top = DataGridViewAdvancedCellBorderStyle.None;
+            }
+            else
+            {
+                e.AdvancedBorderStyle.Top = dgwMicomSWMonitoring.AdvancedCellBorderStyle.Top;
+            }
+        }
+
+        private void dgwMicomSWMonitoring_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex == 0)
+                return;
+            if (e.ColumnIndex > 0)
+                return;
+            if (IsTheSameCellValue(e.ColumnIndex, e.RowIndex))
+            {
+                e.Value = "";
+                e.FormattingApplied = true;
+            }
         }
     }
 }

@@ -33,6 +33,9 @@
             this.btMornitoring = new System.Windows.Forms.Button();
             this.lbIPserver = new System.Windows.Forms.Label();
             this.btApply = new System.Windows.Forms.Button();
+            this.loaddingBox = new System.Windows.Forms.PictureBox();
+            this.bgwTestConnect = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.loaddingBox)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -86,7 +89,7 @@
             this.lbIPserver.ForeColor = System.Drawing.Color.White;
             this.lbIPserver.Location = new System.Drawing.Point(18, 6);
             this.lbIPserver.Name = "lbIPserver";
-            this.lbIPserver.Size = new System.Drawing.Size(566, 24);
+            this.lbIPserver.Size = new System.Drawing.Size(599, 24);
             this.lbIPserver.TabIndex = 9;
             this.lbIPserver.Text = "IP SERVER (Ex: 123.1.2.3)";
             this.lbIPserver.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -109,13 +112,33 @@
             this.btApply.UseVisualStyleBackColor = false;
             this.btApply.Click += new System.EventHandler(this.btApply_Click);
             // 
+            // loaddingBox
+            // 
+            this.loaddingBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.loaddingBox.Image = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.loadding;
+            this.loaddingBox.InitialImage = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.loadding;
+            this.loaddingBox.Location = new System.Drawing.Point(12, 4);
+            this.loaddingBox.Name = "loaddingBox";
+            this.loaddingBox.Size = new System.Drawing.Size(29, 29);
+            this.loaddingBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.loaddingBox.TabIndex = 11;
+            this.loaddingBox.TabStop = false;
+            // 
+            // bgwTestConnect
+            // 
+            this.bgwTestConnect.WorkerReportsProgress = true;
+            this.bgwTestConnect.WorkerSupportsCancellation = true;
+            this.bgwTestConnect.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTestConnect_DoWork);
+            this.bgwTestConnect.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTestConnect_RunWorkerCompleted);
+            // 
             // ConnectString
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.ClientSize = new System.Drawing.Size(706, 74);
+            this.ClientSize = new System.Drawing.Size(706, 69);
             this.ControlBox = false;
+            this.Controls.Add(this.loaddingBox);
             this.Controls.Add(this.btApply);
             this.Controls.Add(this.lbIPserver);
             this.Controls.Add(this.btManager);
@@ -124,6 +147,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "ConnectString";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            ((System.ComponentModel.ISupportInitialize)(this.loaddingBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,5 +160,7 @@
         private System.Windows.Forms.Button btMornitoring;
         private System.Windows.Forms.Label lbIPserver;
         private System.Windows.Forms.Button btApply;
+        private System.Windows.Forms.PictureBox loaddingBox;
+        private System.ComponentModel.BackgroundWorker bgwTestConnect;
     }
 }

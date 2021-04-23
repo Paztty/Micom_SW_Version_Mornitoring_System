@@ -4,70 +4,107 @@ using System.Data;
 using System.IO;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Micom_SW_Version_Mornitoring_System
 {
     class MySQLDatabase
     {
-        //Data Source=172.22.14.220;Initial Catalog=Tech;User ID=sa;Password=***********
-        public static string connectionStr = @"Data Source=172.22.17.241;Initial Catalog=Tech;User ID=micom;Password=tech@12";
-
-        SqlConnection connection = new SqlConnection(connectionStr);
-        public MySQLDatabase(){
-            if (!Directory.Exists(@"C:\MSWS\")) Directory.CreateDirectory(@"C:\MSWS\");
-            if (File.Exists(@"C:\MSWS\databaseConfig.txt"))
+        //Data Source=172.22.14.220;Initial Catalog=Tech;User ID=sa;Password=***********    125.234.128.228
+        public static string connectionStr = @"Data Source=125.234.128.228;Initial Catalog=Tech;User ID=micom;Password=tech@12";
+        //public static string connectionStr = @"Data Source=172.22.17.241;Initial Catalog=Tech;User ID=micom;Password=tech@12";
+        public MySQLDatabase()
+        {
+            if (File.Exists("databaseConfig.txt"))
             {
-                connectionStr = File.ReadAllText(@"C:\MSWS\databaseConfig.txt") + ";Initial Catalog=Tech;User ID=micom;Password=tech@12";
+                connectionStr = Protecter.Decode(File.ReadAllText("databaseConfig.txt"));
+                Console.WriteLine(connectionStr);
             }
             else
             {
-                File.WriteAllText(@"C:\MSWS\databaseConfig.txt", connectionStr.Substring(0,connectionStr.IndexOf(';')));
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
+                {
+                    DataSource = "172.22.17.241",
+                    InitialCatalog = "Tech",
+                    UserID = "micom",
+                    Password = "tech@12",
+                };
+                File.WriteAllText("databaseConfig.txt", Protecter.Encode(builder.ConnectionString));
+                connectionStr = builder.ConnectionString;
+                Console.WriteLine(connectionStr);
             }
-            
         }
 
         public bool Connect()
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
-                connection.Open();
-                connection.Close();
-                return true;
-            }
-            catch(Exception)
-            {
-                return false;
-            }
-        }
-        public bool Connect(string connectstring)
-        {
-            try
-            {
-                connection = new SqlConnection(connectstring);
-                connection.Open();
-                connection.Close();
-                return true;
+                using (SqlConnection myConnection = new SqlConnection(connectionStr))
+                {
+                    SqlCommand command = new SqlCommand("select 1", myConnection)
+                    {
+                        CommandTimeout = 5
+                    };
+                    myConnection.Open();
+                    if (myConnection.State == ConnectionState.Open)
+                    {
+                        stopwatch.Stop();
+                        return true;
+                    }
+                    else
+                    {
+                        stopwatch.Stop();
+                        return false;
+                    }
+                }
             }
             catch (Exception)
             {
+                stopwatch.Stop();
                 return false;
             }
         }
-        public void GetDataFromTable(string databaseTableName)
+
+        public bool Connect(string IP)
         {
-            using (SqlConnection myConnection = new SqlConnection(connectionStr))
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
             {
-                string CmdString = "SELECT * FROM \"Tech\".\"dbo\".\"" +databaseTableName+"\";";
-                SqlCommand Cmd = new SqlCommand(CmdString, myConnection);
-                myConnection.Open();
-                using (SqlDataReader Reader = Cmd.ExecuteReader())
+                //@"Data Source=172.22.17.241;Initial Catalog=Tech;User ID=micom;Password=tech@12"
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
                 {
-                    while (Reader.Read())
+                    DataSource = IP,
+                    InitialCatalog = "Tech",
+                    UserID = "micom",
+                    Password = "tech@12",
+                    ConnectTimeout = 5
+                };
+
+                Console.WriteLine(builder.ConnectionString);
+                using (SqlConnection myConnection = new SqlConnection(builder.ConnectionString))
+                {
+                    SqlCommand command = new SqlCommand("select 1", myConnection)
                     {
-                        Console.WriteLine(Reader.GetString(0));
+                        CommandTimeout = 5
+                    };
+                    myConnection.Open();
+                    if (myConnection.State == ConnectionState.Open)
+                    {
+                        stopwatch.Stop();
+                        return true;
                     }
-                    myConnection.Close();
+                    else
+                    {
+                        stopwatch.Stop();
+                        return false;
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                stopwatch.Stop();
+                return false;
             }
         }
 
@@ -75,7 +112,7 @@ namespace Micom_SW_Version_Mornitoring_System
         {
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
-                string CmdString = "SELECT * FROM MicomVersionUser Where ID = '"+ acc +"';"; 
+                string CmdString = "SELECT * FROM MicomVersionUser Where ID = '" + acc + "';";
                 SqlCommand Cmd = new SqlCommand(CmdString, myConnection);
                 myConnection.Open();
                 using (SqlDataReader dataReader = Cmd.ExecuteReader())
@@ -105,7 +142,7 @@ namespace Micom_SW_Version_Mornitoring_System
         public string AccountChangePass(string acc, string newpass)
         {
             string returnStr = "success.";
-            string CommandText = "UPDATE MicomVersionUser SET \"Password\" = N'"+newpass+"' WHERE  \"ID\" = '" +acc+ "'; ";
+            string CommandText = "UPDATE MicomVersionUser SET \"Password\" = N'" + newpass + "' WHERE  \"ID\" = '" + acc + "'; ";
 
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
@@ -115,37 +152,13 @@ namespace Micom_SW_Version_Mornitoring_System
                 {
                     Cmd.ExecuteNonQuery();
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     returnStr = e.Message;
                 }
                 myConnection.Close();
             }
             return returnStr;
-        }
-
-
-        public void UpdateRunStopStatus(string status, string line)
-        {
-            //UPDATE "Tech"."dbo"."MicomVersionMornitor" SET "PCB Code"='PCB1', "PBA Code"='1', "Main Micom Assy Code"='1', "Main Micom Checksum"='1', "Main Micom Version"='1', "Inv Micom Assy Code"='1', "Inv Micom Checksum"='1', "Inv Micom Version"='1', "Time Change"='2/10/2021 15:38' WHERE  "Line"='DISPLAY_1';
-            string CommandText = "UPDATE MicomVersionMornitor SET " +
-            "Status = '" + status + "'" +
-            "WHERE Line = '" + line + "';";
-
-            using (SqlConnection myConnection = new SqlConnection(connectionStr))
-            {
-                SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
-                myConnection.Open();
-                try
-                {
-                    Cmd.ExecuteNonQuery();
-                    updateChange("MicomVersionMornitor", myConnection);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                myConnection.Close();
-            }
         }
 
         public void getLineList(List<string> lineList)
@@ -175,11 +188,9 @@ namespace Micom_SW_Version_Mornitoring_System
                 }
                 myConnection.Close();
             }
-
         }
         public void CreatTableFromServer(string tableName, System.Data.DataTable outputTable)
         {
-
             string CommandText = "SELECT* FROM sys.columns WHERE object_id = OBJECT_ID('dbo." + tableName + "')";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
@@ -205,87 +216,48 @@ namespace Micom_SW_Version_Mornitoring_System
 
         public void GetDataFromTable(string tableName, System.Data.DataTable outputTable)
         {
-            var Table = new DataTable();
-
-            string CommandText = "SELECT* FROM sys.columns WHERE object_id = OBJECT_ID('dbo." + tableName + "')";
+            string CommandText = "SELECT * FROM \"" + tableName + "\"";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
                 SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
                 myConnection.Open();
                 try
                 {
-                    using (SqlDataReader dataReader = Cmd.ExecuteReader())
+                    using (SqlDataAdapter adapter = new SqlDataAdapter())
                     {
-                        while (dataReader.Read())
-                        {
-                            Table.Columns.Add(dataReader.GetString(1));
-                        }
+                        outputTable.Clear();
+                        adapter.SelectCommand = Cmd;
+                        adapter.Fill(outputTable);
                     }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
-                myConnection.Close();
             }
-
-            CommandText = "SELECT * FROM \"" + tableName + "\"";
-            using (SqlConnection myConnection = new SqlConnection(connectionStr))
-            {
-                SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
-                myConnection.Open();
-                try
-                {
-                    using (SqlDataReader dataReader = Cmd.ExecuteReader())
-                    {
-                        int rowCount = 0;
-                        while (dataReader.Read())
-                        {
-                            Table.Rows.Add();
-                            string[] data = new string[Table.Columns.Count];
-                            for (int i = 0; i < outputTable.Columns.Count; i++)
-                            {
-                                data[i] = dataReader.GetValue(i).ToString();
-                            }
-                            Table.Rows[rowCount].ItemArray = data;
-                            rowCount++;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                myConnection.Close();
-            }
-            outputTable.Rows.Clear();
-            outputTable.Merge(Table);
         }
 
-        public string UpdateData( string tableName, DataTable table, string lastUpdateTime)
+        public string UpdateData(string tableName, DataTable table, string lastUpdateTime)
         {
             string lastUpdate = lastUpdateTime;
             bool haveNewUpdate = false;
-            string CommandText = "SELECT * FROM \"TableUpdate\"";
+            string CommandText = "SELECT * FROM \"TableUpdate\" WHERE \"Table\" = '" + tableName + "';";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
                 SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
-                myConnection.Open();
                 try
                 {
+                    myConnection.Open();
                     using (SqlDataReader dataReader = Cmd.ExecuteReader())
                     {
                         while (dataReader.Read())
                         {
-                            if (dataReader.GetString(0) == tableName)
+                            if (dataReader.GetString(1) != lastUpdateTime)
                             {
-                                if (dataReader.GetString(1) != lastUpdateTime)
-                                {
-                                    haveNewUpdate = true;
-                                    Console.WriteLine(dataReader.GetString(1));
-                                    lastUpdate = dataReader.GetString(1);
-                                    break;
-                                }
+                                haveNewUpdate = true;
+                                Console.WriteLine(dataReader.GetString(1));
+                                lastUpdate = dataReader.GetString(1);
+                                break;
                             }
                         }
                     }
@@ -294,9 +266,7 @@ namespace Micom_SW_Version_Mornitoring_System
                 {
                     Console.WriteLine(e.Message);
                 }
-                myConnection.Close();
             }
-
             if (haveNewUpdate)
             {
                 GetDataFromTable(tableName, table);
@@ -329,7 +299,7 @@ namespace Micom_SW_Version_Mornitoring_System
                     model.ROMs[1].Checksum + "', '" +
                     model.ROMs[1].Version + "', '" +
                     model.ROMs[1].DateApply + "', '" +
-                    Global.user.userID +
+                    Global.user.userName +
                     "');";
                 using (SqlConnection myConnection = new SqlConnection(connectionStr))
                 {
@@ -346,7 +316,6 @@ namespace Micom_SW_Version_Mornitoring_System
                         returnStr = e.Message;
                     }
                     myConnection.Close();
-
                 }
             }
             return returnStr;
@@ -377,7 +346,7 @@ namespace Micom_SW_Version_Mornitoring_System
             "\"Inv Micom Checksum\" = '" + model.ROMs[1].Checksum + "'," +
             "\"Inv Micom Version\" = '" + model.ROMs[1].Version + "'," +
             "\"Inv Apply date\" = '" + model.ROMs[1].DateApply + "'," +
-            "\"Last user\" = '" + Global.user.userID + "'" +
+            "\"Last user\" = '" + Global.user.userName + "'" +
             "WHERE \"Master Data\" = '" + Edit_masterdata + "';";
             Console.WriteLine(CommandText);
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
@@ -444,21 +413,80 @@ namespace Micom_SW_Version_Mornitoring_System
                 try
                 {
                     Cmd.ExecuteNonQuery();
-                    updateChange("MicomVersionMornitor", myConnection);
+                    updateChange("SystemProperties", myConnection);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-                    returnStr =e.Message;
+                    returnStr = e.Message;
                 }
                 myConnection.Close();
             }
             return returnStr;
         }
+        /// <summary>
+        /// update define time stop to site at System properties table
+        /// </summary>
+        /// <param name="action"></param>
+        /// action [update] [check]
+        /// <param name="time"></param>
+        /// time int [ 1 ~ 1000 ]s
+        /// <returns></returns>
+        public int checkUpdateStopTime(string action, int time)
+        {
+            string CommandText = "";
+            if (action == "update")
+            {
+                CommandText = "UPDATE TOP(1) \"Tech\".\"dbo\".\"SystemProperties\" SET \"Value\"=N'" + time + "' WHERE  \"Properties\"='timeStop';";
+                using (SqlConnection myConnection = new SqlConnection(connectionStr))
+                {
+                    SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
+                    myConnection.Open();
+                    try
+                    {
+                        Cmd.ExecuteNonQuery();
+                        updateChange("SystemProperties", myConnection);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    myConnection.Close();
+                }
+            }
+
+            if (action == "check") CommandText = "SELECT TOP 1 \"Properties\", \"Value\" FROM \"Tech\".\"dbo\".\"SystemProperties\" WHERE  \"Properties\" = 'timeStop';";
+            {
+                using (SqlConnection myConnection = new SqlConnection(connectionStr))
+                {
+                    SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
+                    try
+                    {
+                        myConnection.Open();
+                        using (SqlDataReader dataReader = Cmd.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                Console.WriteLine(dataReader.GetString(1));
+                                time = Convert.ToInt32(dataReader.GetString(1));
+                                return time;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+            }
+            return time;
+        }
+
 
         public void updateChange(string table, SqlConnection myConnection)
         {
-            string CommandText = "UPDATE TOP(1) \"TableUpdate\" SET \"Time\"='"+ DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss") +"' WHERE  \"Table\"='"+ table +"';";
+            string CommandText = "UPDATE TOP(1) \"TableUpdate\" SET \"Time\"='" + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss") + "' WHERE  \"Table\"='" + table + "';";
             SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
             try
             {
@@ -473,7 +501,7 @@ namespace Micom_SW_Version_Mornitoring_System
         public void updateAction(string User, string Action)
         {
             string CommandText = "INSERT INTO \"Notificatons\"(\"Time\", \"Date time\", \"User\", \"Actions\")" +
-                                 "VALUES('"+ DateTime.Now.ToString("yyyyMMddHHmmss")+"', '" + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss") + "', '"+ User +"', '"+Action+"')";
+                                 "VALUES('" + DateTime.Now.ToString("yyyyMMddHHmmss") + "', '" + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss") + "', '" + User + "', '" + Action + "')";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
                 SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
@@ -494,7 +522,7 @@ namespace Micom_SW_Version_Mornitoring_System
         public long loadAction(long lastLoad, TextBox tbNotify)
         {
             long lastTime = lastLoad;
-            string CommandText = "SELECT TOP 10 * FROM \"Tech\".\"dbo\".\"Notificatons\" WHERE \"Time\" > '" + lastLoad + "';";
+            string CommandText = "SELECT TOP 100 * FROM \"Tech\".\"dbo\".\"Notificatons\" WHERE \"Time\" > '" + lastLoad + "' ORDER BY \"Time\" ASC;";
             using (SqlConnection myConnection = new SqlConnection(connectionStr))
             {
                 SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
@@ -522,6 +550,110 @@ namespace Micom_SW_Version_Mornitoring_System
                 myConnection.Close();
             }
             return lastTime;
+        }
+
+        public string Eeprom_Insert(EEPROM eeprom)
+        {
+            string returnStr = "success.";
+            string CommandText = "INSERT INTO \"Tech\".\"dbo\".\"EEPROM OPTION\" (\"KeyCode\", \"Company\", \"KitCode\", \"MainPCBAssyCode\", \"MainPCBCode\", \"SubPCBAssyCode\", \"SubPCBCode\", \"EEPROMOption\", \"EEPROMAssyCode\", \"EEPROMpacket\", \"Last user\")" +
+                    "VALUES ('" +
+                    eeprom.KeyCode + "', '" +
+                    eeprom.Company + "', '" +
+                    eeprom.KitCode + "', '" +
+                    eeprom.MainPCBAssyCode + "', '" +
+                    eeprom.MainPCBCode + "', '" +
+                    eeprom.SubPCBAssyCode + "', '" +
+                    eeprom.SubPCBCode + "', '" +
+                    eeprom.EEPROMOption + "', '" +
+                    eeprom.EEPROMAssyCode + "', '" +
+                    eeprom.EEPROMPacket + "', '" +
+                    Global.user.userName + "');";
+            using (SqlConnection myConnection = new SqlConnection(connectionStr))
+            {
+                SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
+                myConnection.Open();
+                try
+                {
+                    Cmd.ExecuteNonQuery();
+                    updateChange("EEPROM OPTION", myConnection);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    returnStr = e.Message;
+                }
+                myConnection.Close();
+            }
+            return returnStr;
+        }
+
+        public string Eeprom_Edit(EEPROM eeprom, string Edit_masterdata)
+        {
+            string returnStr = "success.";
+            if (string.IsNullOrWhiteSpace(Edit_masterdata))
+            {
+                throw new ArgumentException($"'{nameof(Edit_masterdata)}' cannot be null or whitespace", nameof(Edit_masterdata));
+            }
+            string CommandText = "UPDATE \"Tech\".\"dbo\".\"EEPROM OPTION\" SET " +
+                                 "\"KeyCode\"='" + eeprom.KeyCode + "'," +
+                                 "\"Company\"='" + eeprom.Company + "'," +
+                                 "\"KitCode\"='" + eeprom.KitCode + "'," +
+                                 "\"MainPCBAssyCode\"='" + eeprom.MainPCBAssyCode + "'," +
+                                 "\"MainPCBCode\"='" + eeprom.MainPCBCode + "'," +
+                                 "\"SubPCBAssyCode\"='" + eeprom.SubPCBAssyCode + "'," +
+                                 "\"SubPCBCode\"='" + eeprom.SubPCBCode + "'," +
+                                 "\"EEPROMOption\"='" + eeprom.EEPROMOption + "'," +
+                                 "\"EEPROMAssyCode\"='" + eeprom.EEPROMAssyCode + "'," +
+                                 "\"EEPROMpacket\"='" + eeprom.EEPROMPacket + "'," +
+                                 "\"Last user\"='" + Global.user.userName + "'" +
+                                 "WHERE  \"KeyCode\"='" + Edit_masterdata + "';";
+
+            Console.WriteLine(CommandText);
+            using (SqlConnection myConnection = new SqlConnection(connectionStr))
+            {
+                SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
+                myConnection.Open();
+                try
+                {
+                    Cmd.ExecuteNonQuery();
+                    updateChange("EEPROM OPTION", myConnection);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    returnStr = e.Message;
+                }
+                myConnection.Close();
+            }
+            return returnStr;
+        }
+        public string Eeprom_Clrear(string Edit_masterdata)
+        {
+            string returnStr = "success.";
+            if (string.IsNullOrWhiteSpace(Edit_masterdata))
+            {
+                throw new ArgumentException($"'{nameof(Edit_masterdata)}' cannot be null or whitespace", nameof(Edit_masterdata));
+            }
+            string CommandText = "DELETE FROM \"Tech\".\"dbo\".\"EEPROM OPTION\" WHERE  \"KeyCode\" = '" + Edit_masterdata + "';";
+
+            Console.WriteLine(CommandText);
+            using (SqlConnection myConnection = new SqlConnection(connectionStr))
+            {
+                SqlCommand Cmd = new SqlCommand(CommandText, myConnection);
+                myConnection.Open();
+                try
+                {
+                    Cmd.ExecuteNonQuery();
+                    updateChange("EEPROM OPTION", myConnection);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    returnStr = e.Message;
+                }
+                myConnection.Close();
+            }
+            return returnStr;
         }
     }
 }

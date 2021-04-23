@@ -9,18 +9,24 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Micom_SW_Version_Mornitoring_System
 {
+    
     public partial class StartForm : Form
     {
+
         MySQLDatabase database = new MySQLDatabase();
         public StartForm()
         {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             InitializeComponent();
+            AssemblyInfo assemblyInfo = new AssemblyInfo(Assembly.GetEntryAssembly());
+            lbVersion.Text = "Ver " + assemblyInfo.Version + "  " + assemblyInfo.Copyright + "  " + assemblyInfo.Company; 
             //SetStartup();
         }
         private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -78,13 +84,19 @@ namespace Micom_SW_Version_Mornitoring_System
 
         private void btManager_Click(object sender, EventArgs e)
         {
+            pnLoading.Show();
+            timer1.Start();
+        }
+
+        public void loginManager()
+        {
             if (database.Connect())
             {
                 if (changePassFlag)
                 {
                     if (tbUser.TextLength < 7)
                     {
-                        lbEngNotification.Text = "Tài khoản cần tối thiểu 7 kí tự." + Environment.NewLine + "Account needs a minimum of 7 characters.";
+                            lbEngNotification.Text = "Tài khoản cần tối thiểu 7 kí tự." + Environment.NewLine + "Account needs a minimum of 7 characters.";
                     }
                     else
                     {
@@ -92,8 +104,9 @@ namespace Micom_SW_Version_Mornitoring_System
                         {
                             if (tbNewPass.Text == tbRetype.Text)
                             {
-                                lbEngNotification.Text = "Change user password " + database.AccountChangePass(tbUser.Text, tbNewPass.Text);
+                               lbEngNotification.Text = "Change user password " + database.AccountChangePass(tbUser.Text, tbNewPass.Text);
                             }
+                            pnLoading.Hide();
                         }
                     }
                 }
@@ -102,19 +115,21 @@ namespace Micom_SW_Version_Mornitoring_System
                     if (database.AccountCheck(tbUser.Text, tbPassword.Text) != "Guest")
                     {
                         ManagerForm managerForm = new ManagerForm();
+                        pnLoading.Hide();
                         this.Hide();
                         managerForm.ShowDialog();
                         this.Show();
                     }
                     else
                     {
-                        //lbVieNotification.Text = "Tài khoản hoặc mật khẩu không chính xác. Trong trường hợp quên mật khẩu vui lòng liên hệ quản trị viên: 0346809230.";
+                        pnLoading.Hide();
                         lbEngNotification.Text = "Account or password is incorrect. In case of forgetting the password, please contact support.";
                     }
                 }
             }
             else
             {
+                pnLoading.Hide();
                 lbEngNotification.Text = "Connection fail.";
             }
         }
@@ -125,7 +140,6 @@ namespace Micom_SW_Version_Mornitoring_System
             this.Hide();
             mornitoring.ShowDialog();
             this.Show();
-
         }
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
@@ -173,7 +187,27 @@ namespace Micom_SW_Version_Mornitoring_System
             {
                 database = new MySQLDatabase();
             }
+        }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            loginManager();
+        }
+
+        private void lbVersion_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Global.user = new User();
+            ManagerForm managerForm = new ManagerForm();
+            pnLoading.Hide();
+            this.Hide();
+            managerForm.ShowDialog();
+            this.Show();
         }
     }
 }

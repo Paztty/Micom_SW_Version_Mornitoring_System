@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartForm));
-            this.button1 = new System.Windows.Forms.Button();
             this.btMornitoring = new System.Windows.Forms.Button();
             this.btManager = new System.Windows.Forms.Button();
             this.btClose = new System.Windows.Forms.Button();
@@ -48,24 +48,14 @@
             this.lbLine = new System.Windows.Forms.Label();
             this.btMinimize = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lbLoading = new System.Windows.Forms.Label();
+            this.pnLoading = new System.Windows.Forms.Panel();
+            this.loaddingBox = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.pnLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loaddingBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(121)))), ((int)(((byte)(155)))));
-            this.button1.FlatAppearance.BorderSize = 2;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
-            this.button1.Location = new System.Drawing.Point(79, 337);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(230, 41);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Operator";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btMornitoring
             // 
@@ -180,10 +170,11 @@
             this.lbVersion.ForeColor = System.Drawing.SystemColors.Control;
             this.lbVersion.Location = new System.Drawing.Point(8, 381);
             this.lbVersion.Name = "lbVersion";
-            this.lbVersion.Size = new System.Drawing.Size(166, 19);
+            this.lbVersion.Size = new System.Drawing.Size(529, 19);
             this.lbVersion.TabIndex = 11;
-            this.lbVersion.Text = "Ver 1.0  Release 4/3/2021";
+            this.lbVersion.Text = "Ver 1.2  Release 23/3/2021";
             this.lbVersion.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lbVersion.Click += new System.EventHandler(this.lbVersion_Click);
             // 
             // lbEngNotification
             // 
@@ -295,10 +286,70 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Location = new System.Drawing.Point(22, 337);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(37, 41);
+            this.button2.Size = new System.Drawing.Size(38, 41);
             this.button2.TabIndex = 19;
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // lbLoading
+            // 
+            this.lbLoading.BackColor = System.Drawing.Color.Transparent;
+            this.lbLoading.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbLoading.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbLoading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.lbLoading.Location = new System.Drawing.Point(52, 0);
+            this.lbLoading.Name = "lbLoading";
+            this.lbLoading.Size = new System.Drawing.Size(230, 78);
+            this.lbLoading.TabIndex = 43;
+            this.lbLoading.Text = "Loading.....";
+            this.lbLoading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnLoading
+            // 
+            this.pnLoading.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pnLoading.BackColor = System.Drawing.Color.Transparent;
+            this.pnLoading.Controls.Add(this.lbLoading);
+            this.pnLoading.Controls.Add(this.loaddingBox);
+            this.pnLoading.Location = new System.Drawing.Point(560, 253);
+            this.pnLoading.Name = "pnLoading";
+            this.pnLoading.Size = new System.Drawing.Size(282, 78);
+            this.pnLoading.TabIndex = 44;
+            this.pnLoading.Visible = false;
+            // 
+            // loaddingBox
+            // 
+            this.loaddingBox.BackColor = System.Drawing.Color.Transparent;
+            this.loaddingBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.loaddingBox.Image = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.loadding;
+            this.loaddingBox.InitialImage = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.loadding;
+            this.loaddingBox.Location = new System.Drawing.Point(0, 0);
+            this.loaddingBox.Name = "loaddingBox";
+            this.loaddingBox.Size = new System.Drawing.Size(52, 78);
+            this.loaddingBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.loaddingBox.TabIndex = 44;
+            this.loaddingBox.TabStop = false;
+            this.loaddingBox.WaitOnLoad = true;
+            // 
+            // button1
+            // 
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(121)))), ((int)(((byte)(155)))));
+            this.button1.FlatAppearance.BorderSize = 2;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(55)))), ((int)(((byte)(106)))));
+            this.button1.Location = new System.Drawing.Point(133, 337);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(176, 41);
+            this.button1.TabIndex = 45;
+            this.button1.Text = "Version List";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // StartForm
             // 
@@ -309,6 +360,8 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(869, 405);
             this.ControlBox = false;
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.pnLoading);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btMinimize);
             this.Controls.Add(this.lbLine);
@@ -327,7 +380,6 @@
             this.Controls.Add(this.btClose);
             this.Controls.Add(this.btManager);
             this.Controls.Add(this.btMornitoring);
-            this.Controls.Add(this.button1);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -337,14 +389,14 @@
             this.Name = "StartForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
+            this.pnLoading.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.loaddingBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btMornitoring;
         private System.Windows.Forms.Button btManager;
         private System.Windows.Forms.Button btClose;
@@ -363,5 +415,10 @@
         private System.Windows.Forms.Label lbLine;
         private System.Windows.Forms.Button btMinimize;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label lbLoading;
+        private System.Windows.Forms.Panel pnLoading;
+        private System.Windows.Forms.PictureBox loaddingBox;
+        private System.Windows.Forms.Button button1;
     }
 }
