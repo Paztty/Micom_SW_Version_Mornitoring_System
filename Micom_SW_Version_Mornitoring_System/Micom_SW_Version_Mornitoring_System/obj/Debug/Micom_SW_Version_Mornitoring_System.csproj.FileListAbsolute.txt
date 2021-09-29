@@ -112,9 +112,7 @@ D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\System.Text.Json.dll
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\System.Threading.Tasks.Extensions.dll
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\System.ValueTuple.dll
-D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\Ubiety.Dns.Core.dll
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ZaloDotNetSDK.dll
-D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\Zstandard.Net.dll
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ClosedXML.pdb
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ClosedXML.xml
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\DocumentFormat.OpenXml.xml
@@ -145,4 +143,10 @@ D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.csproj.CopyComplete
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.exe
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.pdb
+D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ExcelDataReader.DataSet.dll
+D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ExcelDataReader.dll
+D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ExcelDataReader.pdb
+D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ExcelDataReader.xml
+D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ExcelDataReader.DataSet.pdb
+D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\bin\MSWS\ExcelDataReader.DataSet.xml
 D:\1.DEV\1. Project\2. System\1. Micom SW Version Monitoring System\2. Software\Micom_SW_Version_Mornitoring_System\Micom_SW_Version_Mornitoring_System\obj\Debug\Micom_SW_Version_Mornitoring_System.csprojAssemblyReference.cache

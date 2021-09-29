@@ -39,6 +39,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagerForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -47,7 +57,6 @@
             this.btModelAddNew = new System.Windows.Forms.Button();
             this.btModelEdit = new System.Windows.Forms.Button();
             this.btModelClear = new System.Windows.Forms.Button();
-            this.btExport = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.btFineModel = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
@@ -55,6 +64,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.btMicomoption = new System.Windows.Forms.Button();
             this.btMicomSW = new System.Windows.Forms.Button();
+            this.btCheckUpdate = new System.Windows.Forms.Button();
+            this.btExport = new System.Windows.Forms.Button();
             this.btOption = new System.Windows.Forms.Button();
             this.pn = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -147,6 +158,22 @@
             this.label35 = new System.Windows.Forms.Label();
             this.btSystemSettingCancle = new System.Windows.Forms.Button();
             this.btSystemSettingUpdate = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.pnCompareData = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label34 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgDataCompare = new System.Windows.Forms.DataGridView();
+            this.dgFileImport = new System.Windows.Forms.DataGridView();
+            this.btCloseComparePanel = new System.Windows.Forms.Button();
+            this.label36 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.btCompare = new System.Windows.Forms.Button();
+            this.label33 = new System.Windows.Forms.Label();
+            this.btImportFile = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.pn.SuspendLayout();
@@ -167,6 +194,12 @@
             this.pnEepromOptionChange.SuspendLayout();
             this.pnSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDStoptimeDefine)).BeginInit();
+            this.pnCompareData.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDataCompare)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgFileImport)).BeginInit();
+            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -196,7 +229,6 @@
             this.panel4.Controls.Add(this.btModelAddNew);
             this.panel4.Controls.Add(this.btModelEdit);
             this.panel4.Controls.Add(this.btModelClear);
-            this.panel4.Controls.Add(this.btExport);
             this.panel4.Controls.Add(this.label8);
             this.panel4.Controls.Add(this.btFineModel);
             this.panel4.Controls.Add(this.label27);
@@ -204,6 +236,8 @@
             this.panel4.Controls.Add(this.label9);
             this.panel4.Controls.Add(this.btMicomoption);
             this.panel4.Controls.Add(this.btMicomSW);
+            this.panel4.Controls.Add(this.btCheckUpdate);
+            this.panel4.Controls.Add(this.btExport);
             this.panel4.Controls.Add(this.btOption);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(10, 0);
@@ -224,28 +258,27 @@
             this.cbbModelType.ForeColor = System.Drawing.Color.White;
             this.cbbModelType.FormattingEnabled = true;
             this.cbbModelType.Items.AddRange(new object[] {
-            "All",
+            "None",
             "Refrigerator",
             "Vacuum cleaner",
-            "Washing machine"});
-            this.cbbModelType.Location = new System.Drawing.Point(714, 0);
+            "Washing machine",
+            "SK Bidet"});
+            this.cbbModelType.Location = new System.Drawing.Point(828, 0);
             this.cbbModelType.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.cbbModelType.Name = "cbbModelType";
-            this.cbbModelType.Size = new System.Drawing.Size(206, 26);
+            this.cbbModelType.Size = new System.Drawing.Size(230, 26);
             this.cbbModelType.TabIndex = 35;
             this.cbbModelType.Tag = "Model";
+            this.cbbModelType.SelectedIndexChanged += new System.EventHandler(this.cbbModelType_SelectedIndexChanged);
             this.cbbModelType.SelectionChangeCommitted += new System.EventHandler(this.cbbModel_SelectedIndexChanged);
             // 
             // label10
             // 
             this.label10.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(920, 0);
+            this.label10.Location = new System.Drawing.Point(1058, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(38, 27);
-            this.label10.TabIndex = 36;
-            this.label10.Text = "    ";
+            this.label10.Size = new System.Drawing.Size(41, 27);
+            this.label10.TabIndex = 39;
             // 
             // btModelAddNew
             // 
@@ -256,11 +289,11 @@
             this.btModelAddNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btModelAddNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btModelAddNew.ForeColor = System.Drawing.Color.White;
-            this.btModelAddNew.Location = new System.Drawing.Point(958, 0);
+            this.btModelAddNew.Location = new System.Drawing.Point(1099, 0);
             this.btModelAddNew.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btModelAddNew.Name = "btModelAddNew";
             this.btModelAddNew.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btModelAddNew.Size = new System.Drawing.Size(111, 27);
+            this.btModelAddNew.Size = new System.Drawing.Size(72, 27);
             this.btModelAddNew.TabIndex = 5;
             this.btModelAddNew.Text = "Add new";
             this.btModelAddNew.UseVisualStyleBackColor = false;
@@ -275,11 +308,11 @@
             this.btModelEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btModelEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btModelEdit.ForeColor = System.Drawing.Color.White;
-            this.btModelEdit.Location = new System.Drawing.Point(1069, 0);
+            this.btModelEdit.Location = new System.Drawing.Point(1171, 0);
             this.btModelEdit.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btModelEdit.Name = "btModelEdit";
             this.btModelEdit.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btModelEdit.Size = new System.Drawing.Size(103, 27);
+            this.btModelEdit.Size = new System.Drawing.Size(76, 27);
             this.btModelEdit.TabIndex = 1;
             this.btModelEdit.Text = "Edit";
             this.btModelEdit.UseVisualStyleBackColor = false;
@@ -294,43 +327,22 @@
             this.btModelClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btModelClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btModelClear.ForeColor = System.Drawing.Color.White;
-            this.btModelClear.Location = new System.Drawing.Point(1172, 0);
+            this.btModelClear.Location = new System.Drawing.Point(1247, 0);
             this.btModelClear.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btModelClear.Name = "btModelClear";
             this.btModelClear.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btModelClear.Size = new System.Drawing.Size(103, 27);
+            this.btModelClear.Size = new System.Drawing.Size(78, 27);
             this.btModelClear.TabIndex = 0;
             this.btModelClear.Text = "Clear";
             this.btModelClear.UseVisualStyleBackColor = false;
             this.btModelClear.Click += new System.EventHandler(this.buttonActionClick);
-            // 
-            // btExport
-            // 
-            this.btExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
-            this.btExport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btExport.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btExport.FlatAppearance.BorderSize = 2;
-            this.btExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btExport.ForeColor = System.Drawing.Color.White;
-            this.btExport.Image = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.Excel_icon2;
-            this.btExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btExport.Location = new System.Drawing.Point(1275, 0);
-            this.btExport.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btExport.Name = "btExport";
-            this.btExport.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btExport.Size = new System.Drawing.Size(103, 27);
-            this.btExport.TabIndex = 19;
-            this.btExport.Text = "       Export";
-            this.btExport.UseVisualStyleBackColor = false;
-            this.btExport.Click += new System.EventHandler(this.buttonActionClick);
             // 
             // label8
             // 
             this.label8.Dock = System.Windows.Forms.DockStyle.Left;
             this.label8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(674, 0);
+            this.label8.Location = new System.Drawing.Point(577, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(10, 27);
             this.label8.TabIndex = 20;
@@ -345,11 +357,11 @@
             this.btFineModel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btFineModel.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btFineModel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
-            this.btFineModel.Location = new System.Drawing.Point(600, 0);
+            this.btFineModel.Location = new System.Drawing.Point(509, 0);
             this.btFineModel.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.btFineModel.Name = "btFineModel";
             this.btFineModel.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btFineModel.Size = new System.Drawing.Size(74, 27);
+            this.btFineModel.Size = new System.Drawing.Size(68, 27);
             this.btFineModel.TabIndex = 17;
             this.btFineModel.Text = "Find";
             this.btFineModel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -361,7 +373,7 @@
             this.label27.Dock = System.Windows.Forms.DockStyle.Left;
             this.label27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label27.ForeColor = System.Drawing.Color.White;
-            this.label27.Location = new System.Drawing.Point(581, 0);
+            this.label27.Location = new System.Drawing.Point(490, 0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(19, 27);
             this.label27.TabIndex = 18;
@@ -378,7 +390,7 @@
             this.tbFindModel.MaxLength = 30;
             this.tbFindModel.Multiline = true;
             this.tbFindModel.Name = "tbFindModel";
-            this.tbFindModel.Size = new System.Drawing.Size(293, 27);
+            this.tbFindModel.Size = new System.Drawing.Size(202, 27);
             this.tbFindModel.TabIndex = 16;
             this.tbFindModel.Click += new System.EventHandler(this.tbFindModel_Click);
             this.tbFindModel.TextChanged += new System.EventHandler(this.tbFindModel_TextChanged);
@@ -432,6 +444,49 @@
             this.btMicomSW.UseVisualStyleBackColor = false;
             this.btMicomSW.Click += new System.EventHandler(this.panelSelect);
             // 
+            // btCheckUpdate
+            // 
+            this.btCheckUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.btCheckUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btCheckUpdate.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btCheckUpdate.FlatAppearance.BorderSize = 2;
+            this.btCheckUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btCheckUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCheckUpdate.ForeColor = System.Drawing.Color.White;
+            this.btCheckUpdate.Image = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.reload;
+            this.btCheckUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btCheckUpdate.Location = new System.Drawing.Point(1325, 0);
+            this.btCheckUpdate.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btCheckUpdate.Name = "btCheckUpdate";
+            this.btCheckUpdate.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btCheckUpdate.Size = new System.Drawing.Size(46, 27);
+            this.btCheckUpdate.TabIndex = 40;
+            this.btCheckUpdate.Text = "       Export";
+            this.toolTip.SetToolTip(this.btCheckUpdate, "Compare Update");
+            this.btCheckUpdate.UseVisualStyleBackColor = false;
+            this.btCheckUpdate.Click += new System.EventHandler(this.btCheckUpdate_Click);
+            // 
+            // btExport
+            // 
+            this.btExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.btExport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btExport.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btExport.FlatAppearance.BorderSize = 2;
+            this.btExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btExport.ForeColor = System.Drawing.Color.White;
+            this.btExport.Image = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.Excel_icon2;
+            this.btExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btExport.Location = new System.Drawing.Point(1371, 0);
+            this.btExport.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btExport.Name = "btExport";
+            this.btExport.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btExport.Size = new System.Drawing.Size(50, 27);
+            this.btExport.TabIndex = 19;
+            this.btExport.Text = "       Export";
+            this.btExport.UseVisualStyleBackColor = false;
+            this.btExport.Click += new System.EventHandler(this.buttonActionClick);
+            // 
             // btOption
             // 
             this.btOption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
@@ -443,11 +498,11 @@
             this.btOption.ForeColor = System.Drawing.Color.White;
             this.btOption.Image = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.settings;
             this.btOption.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btOption.Location = new System.Drawing.Point(1378, 0);
+            this.btOption.Location = new System.Drawing.Point(1421, 0);
             this.btOption.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btOption.Name = "btOption";
             this.btOption.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btOption.Size = new System.Drawing.Size(103, 27);
+            this.btOption.Size = new System.Drawing.Size(60, 27);
             this.btOption.TabIndex = 37;
             this.btOption.Text = "      System";
             this.btOption.UseVisualStyleBackColor = false;
@@ -719,13 +774,15 @@
             "None",
             "Refrigerator",
             "Vacuum cleaner",
-            "Washing machine"});
+            "Washing machine",
+            "SK Bidet"});
             this.cbbSetModelType.Location = new System.Drawing.Point(660, 69);
             this.cbbSetModelType.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.cbbSetModelType.Name = "cbbSetModelType";
             this.cbbSetModelType.Size = new System.Drawing.Size(255, 29);
             this.cbbSetModelType.TabIndex = 79;
             this.cbbSetModelType.Tag = "Model";
+            this.cbbSetModelType.SelectedIndexChanged += new System.EventHandler(this.cbbSetModelType_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -1630,6 +1687,344 @@
             this.btSystemSettingUpdate.UseVisualStyleBackColor = false;
             this.btSystemSettingUpdate.Click += new System.EventHandler(this.btSystemSettingUpdate_Click);
             // 
+            // pnCompareData
+            // 
+            this.pnCompareData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.pnCompareData.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnCompareData.Controls.Add(this.tableLayoutPanel4);
+            this.pnCompareData.Controls.Add(this.label34);
+            this.pnCompareData.Controls.Add(this.tableLayoutPanel5);
+            this.pnCompareData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnCompareData.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pnCompareData.ForeColor = System.Drawing.Color.White;
+            this.pnCompareData.Location = new System.Drawing.Point(0, 34);
+            this.pnCompareData.Name = "pnCompareData";
+            this.pnCompareData.Size = new System.Drawing.Size(1501, 718);
+            this.pnCompareData.TabIndex = 81;
+            this.pnCompareData.Visible = false;
+            this.pnCompareData.Paint += new System.Windows.Forms.PaintEventHandler(this.pnCompareData_Paint);
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.Controls.Add(this.button3, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.button2, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.button1, 1, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(1417, 1);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(77, 23);
+            this.tableLayoutPanel4.TabIndex = 84;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.button3.BackgroundImage = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.icons8_macos_close_50;
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Location = new System.Drawing.Point(50, 3);
+            this.button3.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(27, 1);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "  ";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.button2.BackgroundImage = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.icons8_macos_minimize_50;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(0, 3);
+            this.button2.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(25, 1);
+            this.button2.TabIndex = 4;
+            this.button2.Text = "  ";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
+            this.button1.BackgroundImage = global::Micom_SW_Version_Mornitoring_System.Properties.Resources.icons8_maximize_window_50;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(25, 3);
+            this.button1.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(25, 1);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "  ";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // label34
+            // 
+            this.label34.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label34.Location = new System.Drawing.Point(1051, 1);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(248, 31);
+            this.label34.TabIndex = 37;
+            this.label34.Text = "UPDATE COMPARE";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.dgDataCompare, 1, 1);
+            this.tableLayoutPanel5.Controls.Add(this.dgFileImport, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.btCloseComparePanel, 1, 2);
+            this.tableLayoutPanel5.Controls.Add(this.label36, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 3;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1497, 714);
+            this.tableLayoutPanel5.TabIndex = 85;
+            this.tableLayoutPanel5.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel5_Paint);
+            // 
+            // dgDataCompare
+            // 
+            this.dgDataCompare.AllowUserToAddRows = false;
+            this.dgDataCompare.AllowUserToDeleteRows = false;
+            this.dgDataCompare.AllowUserToResizeRows = false;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDataCompare.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle11;
+            this.dgDataCompare.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgDataCompare.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.dgDataCompare.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgDataCompare.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.dgDataCompare.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(1);
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDataCompare.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            this.dgDataCompare.ColumnHeadersHeight = 50;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDataCompare.DefaultCellStyle = dataGridViewCellStyle13;
+            this.dgDataCompare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgDataCompare.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.dgDataCompare.Location = new System.Drawing.Point(751, 34);
+            this.dgDataCompare.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.dgDataCompare.MultiSelect = false;
+            this.dgDataCompare.Name = "dgDataCompare";
+            this.dgDataCompare.ReadOnly = true;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgDataCompare.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            this.dgDataCompare.RowHeadersVisible = false;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgDataCompare.RowsDefaultCellStyle = dataGridViewCellStyle15;
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.Padding = new System.Windows.Forms.Padding(1);
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(68)))), ((int)(((byte)(95)))));
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgDataCompare.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgDataCompare.RowTemplate.ReadOnly = true;
+            this.dgDataCompare.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgDataCompare.Size = new System.Drawing.Size(743, 647);
+            this.dgDataCompare.TabIndex = 84;
+            this.dgDataCompare.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgDataCompare_CellClick);
+            this.dgDataCompare.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgDataCompare_CellMouseDoubleClick);
+            this.dgDataCompare.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgDataCompare_DataBindingComplete);
+            // 
+            // dgFileImport
+            // 
+            this.dgFileImport.AllowUserToAddRows = false;
+            this.dgFileImport.AllowUserToDeleteRows = false;
+            this.dgFileImport.AllowUserToResizeRows = false;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFileImport.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle16;
+            this.dgFileImport.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgFileImport.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.dgFileImport.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgFileImport.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.dgFileImport.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(221)))));
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle17.Padding = new System.Windows.Forms.Padding(1);
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFileImport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            this.dgFileImport.ColumnHeadersHeight = 50;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgFileImport.DefaultCellStyle = dataGridViewCellStyle18;
+            this.dgFileImport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgFileImport.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(12)))));
+            this.dgFileImport.Location = new System.Drawing.Point(3, 34);
+            this.dgFileImport.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.dgFileImport.MultiSelect = false;
+            this.dgFileImport.Name = "dgFileImport";
+            this.dgFileImport.ReadOnly = true;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgFileImport.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            this.dgFileImport.RowHeadersVisible = false;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgFileImport.RowsDefaultCellStyle = dataGridViewCellStyle20;
+            this.dgFileImport.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dgFileImport.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.dgFileImport.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgFileImport.RowTemplate.DefaultCellStyle.Padding = new System.Windows.Forms.Padding(1);
+            this.dgFileImport.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(68)))), ((int)(((byte)(95)))));
+            this.dgFileImport.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgFileImport.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgFileImport.RowTemplate.ReadOnly = true;
+            this.dgFileImport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgFileImport.Size = new System.Drawing.Size(742, 647);
+            this.dgFileImport.TabIndex = 85;
+            this.dgFileImport.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgFileImport_CellClick);
+            this.dgFileImport.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgFileImport_DataBindingComplete);
+            // 
+            // btCloseComparePanel
+            // 
+            this.btCloseComparePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCloseComparePanel.BackColor = System.Drawing.Color.White;
+            this.btCloseComparePanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btCloseComparePanel.FlatAppearance.BorderSize = 0;
+            this.btCloseComparePanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btCloseComparePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCloseComparePanel.ForeColor = System.Drawing.Color.Red;
+            this.btCloseComparePanel.Location = new System.Drawing.Point(1394, 687);
+            this.btCloseComparePanel.Name = "btCloseComparePanel";
+            this.btCloseComparePanel.Size = new System.Drawing.Size(100, 24);
+            this.btCloseComparePanel.TabIndex = 78;
+            this.btCloseComparePanel.Text = "Close";
+            this.btCloseComparePanel.UseVisualStyleBackColor = false;
+            this.btCloseComparePanel.Click += new System.EventHandler(this.btCloseComparePanel_Click);
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(751, 0);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(130, 26);
+            this.label36.TabIndex = 83;
+            this.label36.Text = "Output data";
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 3;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.062F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.66577F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.13747F));
+            this.tableLayoutPanel6.Controls.Add(this.btCompare, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label33, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.btImportFile, 1, 0);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 1;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(742, 28);
+            this.tableLayoutPanel6.TabIndex = 86;
+            // 
+            // btCompare
+            // 
+            this.btCompare.BackColor = System.Drawing.Color.White;
+            this.btCompare.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btCompare.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btCompare.Enabled = false;
+            this.btCompare.FlatAppearance.BorderSize = 0;
+            this.btCompare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btCompare.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCompare.ForeColor = System.Drawing.Color.Red;
+            this.btCompare.Location = new System.Drawing.Point(604, 3);
+            this.btCompare.Name = "btCompare";
+            this.btCompare.Size = new System.Drawing.Size(135, 22);
+            this.btCompare.TabIndex = 86;
+            this.btCompare.Text = "Compare";
+            this.btCompare.UseVisualStyleBackColor = false;
+            this.btCompare.Click += new System.EventHandler(this.btCompare_Click);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.Location = new System.Drawing.Point(3, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(127, 26);
+            this.label33.TabIndex = 82;
+            this.label33.Text = "Import data";
+            // 
+            // btImportFile
+            // 
+            this.btImportFile.BackColor = System.Drawing.Color.White;
+            this.btImportFile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btImportFile.FlatAppearance.BorderSize = 0;
+            this.btImportFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btImportFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btImportFile.ForeColor = System.Drawing.Color.Red;
+            this.btImportFile.Location = new System.Drawing.Point(278, 3);
+            this.btImportFile.Name = "btImportFile";
+            this.btImportFile.Size = new System.Drawing.Size(125, 22);
+            this.btImportFile.TabIndex = 81;
+            this.btImportFile.Text = "Import File";
+            this.btImportFile.UseVisualStyleBackColor = false;
+            this.btImportFile.Click += new System.EventHandler(this.btImportFile_Click);
+            // 
             // ManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1637,6 +2032,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(42)))), ((int)(((byte)(74)))));
             this.ClientSize = new System.Drawing.Size(1501, 752);
             this.ControlBox = false;
+            this.Controls.Add(this.pnCompareData);
             this.Controls.Add(this.pnDataEdit);
             this.Controls.Add(this.pnEepromOptionChange);
             this.Controls.Add(this.pnLoading);
@@ -1648,6 +2044,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1366, 768);
             this.Name = "ManagerForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -1676,6 +2073,15 @@
             this.pnSystem.ResumeLayout(false);
             this.pnSystem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDStoptimeDefine)).EndInit();
+            this.pnCompareData.ResumeLayout(false);
+            this.pnCompareData.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDataCompare)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgFileImport)).EndInit();
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1755,7 +2161,6 @@
         private System.Windows.Forms.Panel pnLoading;
         private System.Windows.Forms.Label lbLoading;
         private System.Windows.Forms.PictureBox loaddingBox;
-        private System.Windows.Forms.Label label10;
         private System.ComponentModel.BackgroundWorker bgwUpdateData;
         private System.Windows.Forms.Button btEEModelUpdate;
         private System.Windows.Forms.Button btEECancleAction;
@@ -1789,6 +2194,24 @@
         private System.Windows.Forms.NumericUpDown nUDStoptimeDefine;
         private System.Windows.Forms.ComboBox cbbSetModelType;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btCheckUpdate;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Panel pnCompareData;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Button btImportFile;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Button btCloseComparePanel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.DataGridView dgDataCompare;
+        private System.Windows.Forms.DataGridView dgFileImport;
+        private System.Windows.Forms.Button btCompare;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
     }
 }
 

@@ -28,8 +28,16 @@ namespace Micom_SW_Version_Mornitoring_System
         public void Init()
         {
             view = new DataView(Table);
+            Source = new BindingSource();
             Source.DataSource = view;
             DataView.Invoke(new Action(()=>{
+                for (int i = 0; i < DataView.ColumnCount; i++)
+                {
+                    if (DataView.Columns[i].Frozen)
+                    {
+                        DataView.Columns[i].Frozen = false;
+                    }
+                }
                 DataView.DataSource = Source;
             }));
         }
@@ -42,6 +50,24 @@ namespace Micom_SW_Version_Mornitoring_System
                 FilterContent += "["+ header.ColumnName +"] LIKE '%" + filterString + "%' OR ";
             }
             FilterContent = FilterContent.Remove(FilterContent.Length - 4,4);
+            view.RowFilter = FilterContent;
+        }
+
+        public void FilterMulti(List<string> filterString, string Column)
+        {
+            String FilterContent = "";
+            foreach (DataColumn header in Table.Columns)
+            {
+                if (header.ColumnName == Column)
+                {
+                    foreach (var item in filterString)
+                    {
+                        FilterContent += "[" + header.ColumnName + "] LIKE '" + item + "%' OR ";
+                    }
+                    break;
+                }
+            }
+            FilterContent = FilterContent.Remove(FilterContent.Length - 4, 4);
             view.RowFilter = FilterContent;
         }
         public void Filter(string Column, string filterString)

@@ -8,6 +8,13 @@ using System.Linq.Expressions;
 using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
+using ExcelDataReader;
+
+
+using DataTable = System.Data.DataTable;
+using Button = System.Windows.Forms.Button;
+using CheckBox = System.Windows.Forms.CheckBox;
+using System.Text.RegularExpressions;
 
 namespace Micom_SW_Version_Mornitoring_System
 {
@@ -42,7 +49,14 @@ namespace Micom_SW_Version_Mornitoring_System
             typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic |
             BindingFlags.Instance | BindingFlags.SetProperty, null,
             dgvMicomOption, new object[] { true });
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic |
+            BindingFlags.Instance | BindingFlags.SetProperty, null,
+            dgFileImport, new object[] { true });
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic |
+            BindingFlags.Instance | BindingFlags.SetProperty, null,
+            dgDataCompare, new object[] { true });
         }
+
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
@@ -60,7 +74,7 @@ namespace Micom_SW_Version_Mornitoring_System
         }
         private void FormControlButton_Click(object sender, EventArgs e)
         {
-            var ctrl = ((Button)sender).Name;
+            var ctrl = ((System.Windows.Forms.Button)sender).Name;
             switch (ctrl)
             {
                 case "btClose":
@@ -90,8 +104,8 @@ namespace Micom_SW_Version_Mornitoring_System
             btModelClear.Enabled = false;
             btExport.Enabled = Global.user.userPermission.Contains("Export");
             btOption.Enabled = Global.user.userPermission.Contains("Option");
+            btCheckUpdate.Enabled = Global.user.userPermission.Contains("Compare");
             cbbModelType.SelectedIndex = 0;
-
 
             lbEditerUser.Text = "EDITOR: " + Global.user.userName + "   ID: " + Global.user.userID;
             lbEEEditor.Text = "EDITOR: " + Global.user.userName + "   ID: " + Global.user.userID;
@@ -403,6 +417,10 @@ namespace Micom_SW_Version_Mornitoring_System
             {
                 cbbSetModelType.SelectedIndex = 3;
             }
+            else if (Model.MasterData.Contains("SK"))
+            {
+                cbbSetModelType.SelectedIndex = 4;
+            }
             else
             {
                 cbbSetModelType.SelectedIndex = 0;
@@ -421,7 +439,7 @@ namespace Micom_SW_Version_Mornitoring_System
 
             if (Model.ROMs[0].DateApply.Length >= 8)
             {
-                var spectCh= '\\';
+                var spectCh = '\\';
                 foreach (Char spectChar in Model.ROMs[0].DateApply)
                 {
                     if (!Char.IsLetterOrDigit(spectChar))
@@ -430,7 +448,7 @@ namespace Micom_SW_Version_Mornitoring_System
                         Console.Write(spectChar);
                         break;
                     }
- 
+
                 }
                 string[] dateStr = Model.ROMs[0].DateApply.Split(spectCh);
 
@@ -514,37 +532,41 @@ namespace Micom_SW_Version_Mornitoring_System
         }
         private string SW_getDataFromControl(string acction)
         {
+
             if (acction == "add")
             {
+                switch (cbbSetModelType.SelectedIndex)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        Model.MasterData = "DA-";
+                        break;
+                    case 2:
+                        Model.MasterData = "DJ-";
+                        break;
+                    case 3:
+                        Model.MasterData = "DC-";
+                        break;
+                    case 4:
+                        Model.MasterData = "SK-";
+                        break;
+                    default:
+                        break;
+                }
+
                 if (tbAssyCode.TextLength > 2)
                 {
-                    Model.MasterData = tbAssyCode.Text;
+                    Model.MasterData += tbAssyCode.Text;
                 }
                 else if (cbbPBAcode.Text.Length > 2)
                 {
-                    Model.MasterData = tbAssyCode.Text;
+                    Model.MasterData += tbAssyCode.Text;
                 }
-                if (Model.MasterData.Length < 2)
+                else
                 {
-                    switch (cbbSetModelType.SelectedIndex)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            Model.MasterData = "DA-";
-                            break;
-                        case 2:
-                            Model.MasterData = "DJ-";
-                            break;
-                        case 3:
-                            Model.MasterData = "DC-";
-                            break;
-                        default:
-                            break;
-                    }
-                    Model.MasterData += DateTime.Now.ToString("yyyyMMdd");
+                    Model.MasterData += DateTime.Now.ToString("yyyyMMddHHmmss");
                 }
-
                 int exited = 0;
             retry:
                 exited++;
@@ -792,7 +814,7 @@ namespace Micom_SW_Version_Mornitoring_System
             //SW_data.Filter_Clear();
             switch (cbbModelType.Text)
             {
-                case "All":
+                case "None":
                     SW_data.Filter_Clear();
                     break;
                 case "Refrigerator":
@@ -803,6 +825,9 @@ namespace Micom_SW_Version_Mornitoring_System
                     break;
                 case "Washing machine":
                     SW_data.Filter("Master Data", "DC");
+                    break;
+                case "SK Bidet":
+                    SW_data.Filter("Master Data", "SK");
                     break;
             }
             this.ActiveControl = tbFindModel;
@@ -897,13 +922,13 @@ namespace Micom_SW_Version_Mornitoring_System
         }
         private void dgvSWVersionMornitor_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.RowIndex != SW_data.RowSelected)
-            {
+           // if (e.RowIndex != SW_data.RowSelected)
+           // {
                 btModelEdit.Enabled = Global.user.userPermission.Contains(User.Permission.Clear.ToString());
                 btModelClear.Enabled = Global.user.userPermission.Contains(User.Permission.Edit.ToString());
                 Model.GetData(dgvSWVersionMornitor, e.RowIndex);
                 SW_data.RowSelected = e.RowIndex;
-            }
+           // }
             SW_loadDataToControl();
             if (Global.user.userPermission.Contains("Edit"))
             {
@@ -930,7 +955,7 @@ namespace Micom_SW_Version_Mornitoring_System
             }
         }
 
-        public List<string> GetAutoCompleSource(DataTable table, int ColumnsIndex, List<string> objectSource)
+        public List<string> GetAutoCompleSource(System.Data.DataTable table, int ColumnsIndex, List<string> objectSource)
         {
             List<string> source = new List<string>(objectSource);
             for (int i = 0; i < table.Rows.Count; i++)
@@ -989,6 +1014,260 @@ namespace Micom_SW_Version_Mornitoring_System
         private void btSystemSettingCancle_Click(object sender, EventArgs e)
         {
             pnSystem.Visible = false;
+        }
+
+        private void cbbSetModelType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbbModelType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        DataSet ds;
+        private void btImportFile_Click(object sender, EventArgs e)
+        {
+            btCompare.Enabled = false;
+            using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Excel Workbook|*.xlsx|Excel Workbook 97-2003|*.xls", ValidateNames = true })
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+
+                    using (var stream = File.Open(ofd.FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        IExcelDataReader reader;
+                        if (ofd.FilterIndex == 2)
+                        {
+                            reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                        }
+                        else
+                        {
+                            reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                        }
+
+                        ds = reader.AsDataSet(new ExcelDataSetConfiguration()
+                        {
+                            ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                            {
+                                UseHeaderRow = true
+                            }
+                        });
+                        reader.Close();
+                        if (ds.Tables.Count >= 1)
+                        {
+                            if (dgFileImport.RowCount > 5) dgFileImport.Rows[4].Frozen = false;
+                            if (dgFileImport.ColumnCount > 2) dgFileImport.Columns[1].Frozen = false;
+
+                            dgFileImport.DataSource = ds.Tables[0];
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btCheckUpdate_Click(object sender, EventArgs e)
+        {
+            pnCompareData.Show();
+            pnCompareData.BringToFront();
+        }
+
+        private void btCloseComparePanel_Click(object sender, EventArgs e)
+        {
+            pnCompareData.Hide();
+            SW_data.DataView = dgvSWVersionMornitor;
+            SW_data.Init();
+        }
+
+        private void pnCompareData_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dgFileImport_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (dgFileImport.Rows.Count > 5 && dgFileImport.Columns.Count >= 10)
+            {
+
+                for (int i = 1; i < 4; i++)
+                {
+                    dgFileImport.Rows[i].Visible = false;
+                }
+
+
+                int hideFormToEnd = dgFileImport.RowCount;
+                for (int j = 0; j < dgFileImport.RowCount; j++)
+                {
+                    if (dgFileImport.Rows[j].Cells[0].Value != null)
+                    {
+                        Console.WriteLine(dgFileImport.Rows[j].Cells[0].Value.ToString());
+                        if (dgFileImport.Rows[j].Cells[0].Value.ToString().Contains("* Ghi chú"))
+                        {
+                            hideFormToEnd = j;
+                            break;
+                        }
+                    }
+                }
+                for (int n = hideFormToEnd - 1; n < dgFileImport.RowCount - 1; n++)
+                {
+                    dgFileImport.Rows[n].Visible = false;
+                }
+
+                for (int column = 0; column < dgFileImport.ColumnCount; column++)
+                {
+                    dgFileImport.Columns[column].HeaderText = dgFileImport.Rows[4].Cells[column].Value.ToString();
+                }
+
+                dgFileImport.Rows[4].Visible = false;
+
+                dgFileImport.Columns[2].Visible = false;
+                dgFileImport.Columns[3].Visible = false;
+                dgFileImport.Columns[4].Visible = false;
+
+                dgFileImport.Columns[0].Width = 100;
+                dgFileImport.Rows[4].Frozen = true;
+                dgFileImport.Columns[1].Frozen = true;
+                dgFileImport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                if (dgDataCompare.ColumnCount > 4) dgDataCompare.Columns[3].Frozen = false;
+                GetCompareData();
+            }
+
+        }
+
+        public void GetCompareData()
+        {
+            _Data dataCheck = SW_data;
+            dataCheck.DataView = dgDataCompare;
+            dataCheck.Init();
+            CurrencyManager currencyManager = (CurrencyManager)BindingContext[dgDataCompare.DataSource];
+            currencyManager.SuspendBinding();
+            List<string> filterData = new List<string>();
+            for (int i = 0; i < dgFileImport.RowCount; i++)
+            {
+                if (dgFileImport[0, i].Value != null)
+                {
+                    if (int.TryParse(dgFileImport[0, i].Value.ToString(), out _))
+                    {
+                        filterData.Add(dgFileImport[1, i].Value.ToString());
+                    }
+                }
+            }
+            dataCheck.FilterMulti(filterData, "Assy Code");
+            currencyManager.ResumeBinding();
+
+        }
+
+        private void dgDataCompare_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            dgDataCompare.Columns[0].Visible = false;
+            dgDataCompare.Columns[3].Frozen = true;
+            btCompare.Enabled = true;
+        }
+
+        public void Compare()
+        {
+            for (int i = 4; i < dgFileImport.Rows.Count; i++)
+            {
+                if (dgFileImport[1, i].Value != null)
+                {
+                    bool nonexited = true;
+                    for (int j = 0; j < dgDataCompare.Rows.Count; j++)
+                    {
+                        if (dgFileImport.Rows[i].Cells[1].Value.ToString() == dgDataCompare.Rows[j].Cells["Assy Code"].Value.ToString() || dgFileImport.Rows[i].Cells[1].Value.ToString() == dgDataCompare.Rows[j].Cells["PBA Code"].Value.ToString())
+                        {
+                            if (dgFileImport.Rows[i].Cells[8].Value.ToString().ToUpper() != dgDataCompare.Rows[j].Cells["Main Checksum"].Value.ToString().ToUpper())
+                            {
+                                dgFileImport.Rows[i].Cells[8].Style.BackColor = Color.FromArgb(218, 150, 148);
+                                dgDataCompare.Rows[j].Cells["Main Checksum"].Style.BackColor = Color.FromArgb(218, 150, 148);
+                            }
+
+                            if (dgFileImport.Rows[i].Cells[7].Value.ToString().ToUpper() != dgDataCompare.Rows[j].Cells["Main Version"].Value.ToString().ToUpper())
+                            {
+                                dgFileImport.Rows[i].Cells[7].Style.BackColor = Color.FromArgb(249, 191, 143);
+                                dgDataCompare.Rows[j].Cells["Main Version"].Style.BackColor = Color.FromArgb(249, 191, 143);
+                            }
+                            nonexited = false;
+                            break;
+                        }
+                    }
+                    if (nonexited)
+                    {
+                        dgFileImport.Rows[i].Cells[1].Style.BackColor = Color.FromArgb(224, 189, 119);
+                    }
+                }
+            }
+        }
+
+        private void btCompare_Click(object sender, EventArgs e)
+        {
+            Compare();
+        }
+
+        private void tableLayoutPanel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dgFileImport_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgFileImport[1, e.RowIndex].Value != null)
+                {
+                    bool nonexited = true;
+                    for (int j = 0; j < dgDataCompare.Rows.Count; j++)
+                    {
+                        if (dgFileImport.Rows[e.RowIndex].Cells[1].Value.ToString() == dgDataCompare.Rows[j].Cells["Assy Code"].Value.ToString() || dgFileImport.Rows[e.RowIndex].Cells[1].Value.ToString() == dgDataCompare.Rows[j].Cells["PBA Code"].Value.ToString())
+                        {
+                            nonexited = false;
+                            dgDataCompare.CurrentCell = dgDataCompare.Rows[j].Cells["Assy Code"];
+                            break;
+                        }
+                    }
+                    if (nonexited)
+                    {
+                        dgFileImport.Rows[e.RowIndex].Cells[1].Style.BackColor = Color.FromArgb(224, 189, 119);
+                    }
+                }
+            }
+            catch (Exception) { }
+
+        }
+
+        private void dgDataCompare_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgFileImport[1, e.RowIndex].Value != null)
+            {
+                for (int j = 0; j < dgFileImport.Rows.Count; j++)
+                {
+                    if (dgFileImport.Rows[j].Cells[1].Value.ToString() == dgDataCompare.Rows[e.RowIndex].Cells["Assy Code"].Value.ToString() || dgFileImport.Rows[j].Cells[1].Value.ToString() == dgDataCompare.Rows[e.RowIndex].Cells["PBA Code"].Value.ToString())
+                    {
+                        dgFileImport.CurrentCell = dgFileImport.Rows[j].Cells[1];
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void dgDataCompare_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // if (e.RowIndex != SW_data.RowSelected)
+            // {
+            btModelEdit.Enabled = Global.user.userPermission.Contains(User.Permission.Clear.ToString());
+            btModelClear.Enabled = Global.user.userPermission.Contains(User.Permission.Edit.ToString());
+            Model.GetData(dgDataCompare, e.RowIndex);
+            SW_data.RowSelected = e.RowIndex;
+            // }
+            SW_loadDataToControl();
+            if (Global.user.userPermission.Contains("Edit"))
+            {
+                pnDataEdit.BringToFront();
+                pnDataEdit.Visible = true;
+                acction = "edit";
+                dgvSWVersionMornitor.Enabled = false;
+            }
         }
     }
 }

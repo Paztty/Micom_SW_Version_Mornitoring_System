@@ -1,0 +1,8 @@
+
+
+For Admin setup run MSWS_setup.bin/Setup.exe
+For nonAdmin : run "MSWS\Micom_SW_Version_Mornitoring_System.exe"
+
+1.6.2 Rename Monitoring window to "Micom PGM Writing Monitoring"
+
+1.6.0 ADD SK Bidet model

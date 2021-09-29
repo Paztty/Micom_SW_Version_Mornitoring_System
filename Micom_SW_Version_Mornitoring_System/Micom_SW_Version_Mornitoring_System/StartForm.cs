@@ -16,7 +16,7 @@ using System.Reflection;
 
 namespace Micom_SW_Version_Mornitoring_System
 {
-    
+
     public partial class StartForm : Form
     {
 
@@ -26,7 +26,7 @@ namespace Micom_SW_Version_Mornitoring_System
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             InitializeComponent();
             AssemblyInfo assemblyInfo = new AssemblyInfo(Assembly.GetEntryAssembly());
-            lbVersion.Text = "Ver " + assemblyInfo.Version + "  " + assemblyInfo.Copyright + "  " + assemblyInfo.Company; 
+            lbVersion.Text = "Ver " + assemblyInfo.Version + "  " + assemblyInfo.Copyright + "  " + assemblyInfo.Company;
             //SetStartup();
         }
         private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -96,7 +96,7 @@ namespace Micom_SW_Version_Mornitoring_System
                 {
                     if (tbUser.TextLength < 7)
                     {
-                            lbEngNotification.Text = "Tài khoản cần tối thiểu 7 kí tự." + Environment.NewLine + "Account needs a minimum of 7 characters.";
+                        lbEngNotification.Text = "Tài khoản cần tối thiểu 7 kí tự." + Environment.NewLine + "Account needs a minimum of 7 characters.";
                     }
                     else
                     {
@@ -104,7 +104,7 @@ namespace Micom_SW_Version_Mornitoring_System
                         {
                             if (tbNewPass.Text == tbRetype.Text)
                             {
-                               lbEngNotification.Text = "Change user password " + database.AccountChangePass(tbUser.Text, tbNewPass.Text);
+                                lbEngNotification.Text = "Change user password " + database.AccountChangePass(tbUser.Text, tbNewPass.Text);
                             }
                             pnLoading.Hide();
                         }

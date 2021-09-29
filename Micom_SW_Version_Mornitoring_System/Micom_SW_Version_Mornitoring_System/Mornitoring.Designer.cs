@@ -57,9 +57,9 @@
             this.lbHeader.ForeColor = System.Drawing.Color.White;
             this.lbHeader.Location = new System.Drawing.Point(0, 0);
             this.lbHeader.Name = "lbHeader";
-            this.lbHeader.Size = new System.Drawing.Size(1290, 49);
+            this.lbHeader.Size = new System.Drawing.Size(1378, 50);
             this.lbHeader.TabIndex = 0;
-            this.lbHeader.Text = "Micom SW Mornitoring";
+            this.lbHeader.Text = "Micom PGM Writing Monitoring";
             this.lbHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnTop_MouseDown);
             // 
@@ -78,7 +78,7 @@
             this.dgwMicomSWMonitoring.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgwMicomSWMonitoring.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dgwMicomSWMonitoring.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -86,7 +86,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgwMicomSWMonitoring.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgwMicomSWMonitoring.ColumnHeadersHeight = 34;
+            this.dgwMicomSWMonitoring.ColumnHeadersHeight = 35;
             this.dgwMicomSWMonitoring.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgwMicomSWMonitoring.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AREA});
@@ -98,10 +98,10 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgwMicomSWMonitoring.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgwMicomSWMonitoring.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgwMicomSWMonitoring.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgwMicomSWMonitoring.EnableHeadersVisualStyles = false;
             this.dgwMicomSWMonitoring.GridColor = System.Drawing.Color.Black;
-            this.dgwMicomSWMonitoring.Location = new System.Drawing.Point(0, 49);
+            this.dgwMicomSWMonitoring.Location = new System.Drawing.Point(0, 50);
             this.dgwMicomSWMonitoring.MultiSelect = false;
             this.dgwMicomSWMonitoring.Name = "dgwMicomSWMonitoring";
             this.dgwMicomSWMonitoring.ReadOnly = true;
@@ -123,7 +123,7 @@
             this.dgwMicomSWMonitoring.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
             this.dgwMicomSWMonitoring.RowTemplate.Height = 35;
             this.dgwMicomSWMonitoring.RowTemplate.ReadOnly = true;
-            this.dgwMicomSWMonitoring.Size = new System.Drawing.Size(1290, 606);
+            this.dgwMicomSWMonitoring.Size = new System.Drawing.Size(1378, 606);
             this.dgwMicomSWMonitoring.TabIndex = 3;
             this.dgwMicomSWMonitoring.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgwMicomSWMonitoring_CellFormatting);
             this.dgwMicomSWMonitoring.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgwMicomSWMonitoring_CellPainting);
@@ -143,7 +143,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1290, 49);
+            this.panel1.Size = new System.Drawing.Size(1378, 50);
             this.panel1.TabIndex = 3;
             // 
             // tableLayoutPanel2
@@ -156,7 +156,7 @@
             this.tableLayoutPanel2.Controls.Add(this.btMaximize, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.btMinimize, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btClose, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1145, 9);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1233, 9);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -227,7 +227,7 @@
             this.lbLoading.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lbLoading.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbLoading.ForeColor = System.Drawing.Color.White;
-            this.lbLoading.Location = new System.Drawing.Point(398, 283);
+            this.lbLoading.Location = new System.Drawing.Point(442, 290);
             this.lbLoading.Name = "lbLoading";
             this.lbLoading.Size = new System.Drawing.Size(494, 89);
             this.lbLoading.TabIndex = 42;
@@ -238,8 +238,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.ClientSize = new System.Drawing.Size(1290, 655);
+            this.ClientSize = new System.Drawing.Size(1378, 668);
             this.ControlBox = false;
             this.Controls.Add(this.dgwMicomSWMonitoring);
             this.Controls.Add(this.lbLoading);
@@ -250,6 +251,7 @@
             this.MinimizeBox = false;
             this.Name = "Mornitoring";
             this.Load += new System.EventHandler(this.Mornitoring_Load);
+            this.SizeChanged += new System.EventHandler(this.Mornitoring_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.dgwMicomSWMonitoring)).EndInit();
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
